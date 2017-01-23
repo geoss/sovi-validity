@@ -226,7 +226,7 @@ for area in varContrib.iterkeys():
     variable_contributions[area] = [x for i, x in varContrib[area]]
 
 #################################################################################
-# For each county compure rank within state for US, state, and fema_region socis
+# For each county compute rank within state for US, state, and fema_region socis
 ##################################################################################
 
 county_in_state_rank = pd.DataFrame(index=State_Sovi_Score.index,
