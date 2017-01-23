@@ -1,0 +1,11 @@
+FEMA Region,State,Abbrev,Query
+FEMA 1,Maine_New Hampshire_Massachusetts,ME-NH-MA,g23|g33|g25
+FEMA 2,New York,NY,g36
+FEMA 3,Virginia,VA,g51
+FEMA 4,Georgia,GA,g13
+FEMA 5,Illinois,IL,g17
+FEMA 6,Texas,TX,g48
+FEMA 7,Missouri,MO,g29
+FEMA 8,South Dakota,SD,g46
+FEMA 9,California,CA,g06
+FEMA 10,Idaho,ID,g16

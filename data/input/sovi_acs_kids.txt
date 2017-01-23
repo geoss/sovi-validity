@@ -1,0 +1,359 @@
+--------------------------------------------------------------------------------
+Codebook for Social Explorer report ID: R10775556
+--------------------------------------------------------------------------------
+
+Contents
+    - Table Summary
+    - Data Dictionary
+    - Citation and Use
+
+
+--------------------------------------------------------------------------------
+Table Summary
+--------------------------------------------------------------------------------
+ 
+Survey:           ACS 2008 -- 2012 (5-Year Estimates)
+Dataset:          American Community Survey Tables:  2008 -- 2012 (5-Year Estimates)
+Tables:
+
+      1. Place Of Birth By Age In The United States
+         Universe:  Universe:  Total population in the United States
+         Name:      B06001
+         Variables:
+            B06001001:   Total
+            B06001002:         Under 5 Years
+            B06001003:         5 To 17 Years
+            B06001004:         18 To 24 Years
+            B06001005:         25 To 34 Years
+            B06001006:         35 To 44 Years
+            B06001007:         45 To 54 Years
+            B06001008:         55 To 59 Years
+            B06001009:         60 And 61 Years
+            B06001010:         62 To 64 Years
+            B06001011:         65 To 74 Years
+            B06001012:         75 Years And Over
+            B06001013:      Born In State Of Residence
+            B06001014:         Under 5 Years
+            B06001015:         5 To 17 Years
+            B06001016:         18 To 24 Years
+            B06001017:         25 To 34 Years
+            B06001018:         35 To 44 Years
+            B06001019:         45 To 54 Years
+            B06001020:         55 To 59 Years
+            B06001021:         60 And 61 Years
+            B06001022:         62 To 64 Years
+            B06001023:         65 To 74 Years
+            B06001024:         75 Years And Over
+            B06001025:      Born In Other State In The United States
+            B06001026:         Under 5 Years
+            B06001027:         5 To 17 Years
+            B06001028:         18 To 24 Years
+            B06001029:         25 To 34 Years
+            B06001030:         35 To 44 Years
+            B06001031:         45 To 54 Years
+            B06001032:         55 To 59 Years
+            B06001033:         60 And 61 Years
+            B06001034:         62 To 64 Years
+            B06001035:         65 To 74 Years
+            B06001036:         75 Years And Over
+            B06001037:      Native; Born Outside The United States
+            B06001038:         Under 5 Years
+            B06001039:         5 To 17 Years
+            B06001040:         18 To 24 Years
+            B06001041:         25 To 34 Years
+            B06001042:         35 To 44 Years
+            B06001043:         45 To 54 Years
+            B06001044:         55 To 59 Years
+            B06001045:         60 And 61 Years
+            B06001046:         62 To 64 Years
+            B06001047:         65 To 74 Years
+            B06001048:         75 Years And Over
+            B06001049:      Foreign Born
+            B06001050:         Under 5 Years
+            B06001051:         5 To 17 Years
+            B06001052:         18 To 24 Years
+            B06001053:         25 To 34 Years
+            B06001054:         35 To 44 Years
+            B06001055:         45 To 54 Years
+            B06001056:         55 To 59 Years
+            B06001057:         60 And 61 Years
+            B06001058:         62 To 64 Years
+            B06001059:         65 To 74 Years
+            B06001060:         75 Years And Over
+
+
+      2. Place Of Birth By Age In The United States
+         Universe:  Universe:  Total population in the United States
+         Name:      B06001_se
+         Variables:
+            B06001001s:   Std. Error: Total
+            B06001002s:         Std. Error: Under 5 Years
+            B06001003s:         Std. Error: 5 To 17 Years
+            B06001004s:         Std. Error: 18 To 24 Years
+            B06001005s:         Std. Error: 25 To 34 Years
+            B06001006s:         Std. Error: 35 To 44 Years
+            B06001007s:         Std. Error: 45 To 54 Years
+            B06001008s:         Std. Error: 55 To 59 Years
+            B06001009s:         Std. Error: 60 And 61 Years
+            B06001010s:         Std. Error: 62 To 64 Years
+            B06001011s:         Std. Error: 65 To 74 Years
+            B06001012s:         Std. Error: 75 Years And Over
+            B06001013s:      Std. Error: Born In State Of Residence
+            B06001014s:         Std. Error: Under 5 Years
+            B06001015s:         Std. Error: 5 To 17 Years
+            B06001016s:         Std. Error: 18 To 24 Years
+            B06001017s:         Std. Error: 25 To 34 Years
+            B06001018s:         Std. Error: 35 To 44 Years
+            B06001019s:         Std. Error: 45 To 54 Years
+            B06001020s:         Std. Error: 55 To 59 Years
+            B06001021s:         Std. Error: 60 And 61 Years
+            B06001022s:         Std. Error: 62 To 64 Years
+            B06001023s:         Std. Error: 65 To 74 Years
+            B06001024s:         Std. Error: 75 Years And Over
+            B06001025s:      Std. Error: Born In Other State In The United States
+            B06001026s:         Std. Error: Under 5 Years
+            B06001027s:         Std. Error: 5 To 17 Years
+            B06001028s:         Std. Error: 18 To 24 Years
+            B06001029s:         Std. Error: 25 To 34 Years
+            B06001030s:         Std. Error: 35 To 44 Years
+            B06001031s:         Std. Error: 45 To 54 Years
+            B06001032s:         Std. Error: 55 To 59 Years
+            B06001033s:         Std. Error: 60 And 61 Years
+            B06001034s:         Std. Error: 62 To 64 Years
+            B06001035s:         Std. Error: 65 To 74 Years
+            B06001036s:         Std. Error: 75 Years And Over
+            B06001037s:      Std. Error: Native; Born Outside The United States
+            B06001038s:         Std. Error: Under 5 Years
+            B06001039s:         Std. Error: 5 To 17 Years
+            B06001040s:         Std. Error: 18 To 24 Years
+            B06001041s:         Std. Error: 25 To 34 Years
+            B06001042s:         Std. Error: 35 To 44 Years
+            B06001043s:         Std. Error: 45 To 54 Years
+            B06001044s:         Std. Error: 55 To 59 Years
+            B06001045s:         Std. Error: 60 And 61 Years
+            B06001046s:         Std. Error: 62 To 64 Years
+            B06001047s:         Std. Error: 65 To 74 Years
+            B06001048s:         Std. Error: 75 Years And Over
+            B06001049s:      Std. Error: Foreign Born
+            B06001050s:         Std. Error: Under 5 Years
+            B06001051s:         Std. Error: 5 To 17 Years
+            B06001052s:         Std. Error: 18 To 24 Years
+            B06001053s:         Std. Error: 25 To 34 Years
+            B06001054s:         Std. Error: 35 To 44 Years
+            B06001055s:         Std. Error: 45 To 54 Years
+            B06001056s:         Std. Error: 55 To 59 Years
+            B06001057s:         Std. Error: 60 And 61 Years
+            B06001058s:         Std. Error: 62 To 64 Years
+            B06001059s:         Std. Error: 65 To 74 Years
+            B06001060s:         Std. Error: 75 Years And Over
+
+
+
+
+
+ 
+ 
+ 
+--------------------------------------------------------------------------------
+Data Dictionary
+--------------------------------------------------------------------------------
+ 
+Variables 
+      FIPS:           FIPS
+      GEOID:          Geographic Identifier
+      NAME:           Name of Area
+      QName:          Qualifying Name
+      STUSAB:         State/U.S.-Abbreviation (USPS)
+      SUMLEV:         Summary Level
+      GEOCOMP:        Geographic Component
+      FILEID:         File Identification
+      LOGRECNO:       Logical Record Number
+      US:             US
+      REGION:         Region
+      DIVISION:       Division
+      STATECE:        State (Census Code)
+      STATE:          State (FIPS)
+      COUNTY:         County
+      COUSUB:         County Subdivision (FIPS)
+      PLACE:          Place (FIPS Code)
+      PLACESE:        Place (State FIPS + Place FIPS)
+      TRACT:          Census Tract
+      BLKGRP:         Block Group
+      CONCIT:         Consolidated City
+      AIANHH:         American Indian Area/Alaska Native Area/Hawaiian Home Land (Census)
+      AIANHHFP:       American Indian Area/Alaska Native Area/Hawaiian Home Land (FIPS)
+      AIHHTLI:        American Indian Trust Land/Hawaiian Home Land Indicator
+      AITSCE:         American Indian Tribal Subdivision (Census)
+      AITS:           American Indian Tribal Subdivision (FIPS)
+      ANRC:           Alaska Native Regional Corporation (FIPS)
+      CBSA:           Metropolitan and Micropolitan Statistical Area
+      CSA:            Combined Statistical Area
+      METDIV:         Metropolitan Division
+      MACC:           Metropolitan Area Central City
+      MEMI:           Metropolitan/Micropolitan Indicator Flag
+      NECTA:          New England City and Town Combined Statistical Area
+      CNECTA:         New England City and Town Area
+      NECTADIV:       New England City and Town Area Division
+      UA:             Urban Area
+      UACP:           Urban Area Central Place
+      CDCURR:         Current Congressional District ***
+      SLDU:           State Legislative District Upper
+      SLDL:           State Legislative District Lower
+      VTD:            Voting District
+      ZCTA3:          ZIP Code Tabulation Area (3-digit)
+      ZCTA5:          ZIP Code Tabulation Area (5-digit)
+      SUBMCD:         Subbarrio (FIPS)
+      SDELM:          School District (Elementary)
+      SDSEC:          School District (Secondary)
+      SDUNI:          School District (Unified)
+      UR:             Urban/Rural
+      PCI:            Principal City Indicator
+      TAZ:            Traffic Analysis Zone
+      UGA:            Urban Growth Area
+      BTTR:           Tribal Tract
+      BTBG:           Tribal Block Group
+      PUMA5:          Public Use Microdata Area - 5% File
+      PUMA1:          Public Use Microdata Area - 1% File
+      B06001001:      Total Population In The United States
+      B06001002:      Total Population In The United States: Under 5 Years
+      B06001003:      Total Population In The United States: 5 To 17 Years
+      B06001004:      Total Population In The United States: 18 To 24 Years
+      B06001005:      Total Population In The United States: 25 To 34 Years
+      B06001006:      Total Population In The United States: 35 To 44 Years
+      B06001007:      Total Population In The United States: 45 To 54 Years
+      B06001008:      Total Population In The United States: 55 To 59 Years
+      B06001009:      Total Population In The United States: 60 And 61 Years
+      B06001010:      Total Population In The United States: 62 To 64 Years
+      B06001011:      Total Population In The United States: 65 To 74 Years
+      B06001012:      Total Population In The United States: 75 Years And Over
+      B06001013:      Total Population In The United States: Born In State Of Residence
+      B06001014:      Total Population In The United States: Born In State Of Residence: Under 5 Years
+      B06001015:      Total Population In The United States: Born In State Of Residence: 5 To 17 Years
+      B06001016:      Total Population In The United States: Born In State Of Residence: 18 To 24 Years
+      B06001017:      Total Population In The United States: Born In State Of Residence: 25 To 34 Years
+      B06001018:      Total Population In The United States: Born In State Of Residence: 35 To 44 Years
+      B06001019:      Total Population In The United States: Born In State Of Residence: 45 To 54 Years
+      B06001020:      Total Population In The United States: Born In State Of Residence: 55 To 59 Years
+      B06001021:      Total Population In The United States: Born In State Of Residence: 60 And 61 Years
+      B06001022:      Total Population In The United States: Born In State Of Residence: 62 To 64 Years
+      B06001023:      Total Population In The United States: Born In State Of Residence: 65 To 74 Years
+      B06001024:      Total Population In The United States: Born In State Of Residence: 75 Years And Over
+      B06001025:      Total Population In The United States: Born In Other State In The United States
+      B06001026:      Total Population In The United States: Born In Other State In The United States: Under 5 Years
+      B06001027:      Total Population In The United States: Born In Other State In The United States: 5 To 17 Years
+      B06001028:      Total Population In The United States: Born In Other State In The United States: 18 To 24 Years
+      B06001029:      Total Population In The United States: Born In Other State In The United States: 25 To 34 Years
+      B06001030:      Total Population In The United States: Born In Other State In The United States: 35 To 44 Years
+      B06001031:      Total Population In The United States: Born In Other State In The United States: 45 To 54 Years
+      B06001032:      Total Population In The United States: Born In Other State In The United States: 55 To 59 Years
+      B06001033:      Total Population In The United States: Born In Other State In The United States: 60 And 61 Years
+      B06001034:      Total Population In The United States: Born In Other State In The United States: 62 To 64 Years
+      B06001035:      Total Population In The United States: Born In Other State In The United States: 65 To 74 Years
+      B06001036:      Total Population In The United States: Born In Other State In The United States: 75 Years And Over
+      B06001037:      Total Population In The United States: Native; Born Outside The United States
+      B06001038:      Total Population In The United States: Native; Born Outside The United States: Under 5 Years
+      B06001039:      Total Population In The United States: Native; Born Outside The United States: 5 To 17 Years
+      B06001040:      Total Population In The United States: Native; Born Outside The United States: 18 To 24 Years
+      B06001041:      Total Population In The United States: Native; Born Outside The United States: 25 To 34 Years
+      B06001042:      Total Population In The United States: Native; Born Outside The United States: 35 To 44 Years
+      B06001043:      Total Population In The United States: Native; Born Outside The United States: 45 To 54 Years
+      B06001044:      Total Population In The United States: Native; Born Outside The United States: 55 To 59 Years
+      B06001045:      Total Population In The United States: Native; Born Outside The United States: 60 And 61 Years
+      B06001046:      Total Population In The United States: Native; Born Outside The United States: 62 To 64 Years
+      B06001047:      Total Population In The United States: Native; Born Outside The United States: 65 To 74 Years
+      B06001048:      Total Population In The United States: Native; Born Outside The United States: 75 Years And Over
+      B06001049:      Total Population In The United States: Foreign Born
+      B06001050:      Total Population In The United States: Foreign Born: Under 5 Years
+      B06001051:      Total Population In The United States: Foreign Born: 5 To 17 Years
+      B06001052:      Total Population In The United States: Foreign Born: 18 To 24 Years
+      B06001053:      Total Population In The United States: Foreign Born: 25 To 34 Years
+      B06001054:      Total Population In The United States: Foreign Born: 35 To 44 Years
+      B06001055:      Total Population In The United States: Foreign Born: 45 To 54 Years
+      B06001056:      Total Population In The United States: Foreign Born: 55 To 59 Years
+      B06001057:      Total Population In The United States: Foreign Born: 60 And 61 Years
+      B06001058:      Total Population In The United States: Foreign Born: 62 To 64 Years
+      B06001059:      Total Population In The United States: Foreign Born: 65 To 74 Years
+      B06001060:      Total Population In The United States: Foreign Born: 75 Years And Over
+      B06001001s:     Std. Error: Total Population In The United States
+      B06001002s:     Std. Error: Total Population In The United States: Under 5 Years
+      B06001003s:     Std. Error: Total Population In The United States: 5 To 17 Years
+      B06001004s:     Std. Error: Total Population In The United States: 18 To 24 Years
+      B06001005s:     Std. Error: Total Population In The United States: 25 To 34 Years
+      B06001006s:     Std. Error: Total Population In The United States: 35 To 44 Years
+      B06001007s:     Std. Error: Total Population In The United States: 45 To 54 Years
+      B06001008s:     Std. Error: Total Population In The United States: 55 To 59 Years
+      B06001009s:     Std. Error: Total Population In The United States: 60 And 61 Years
+      B06001010s:     Std. Error: Total Population In The United States: 62 To 64 Years
+      B06001011s:     Std. Error: Total Population In The United States: 65 To 74 Years
+      B06001012s:     Std. Error: Total Population In The United States: 75 Years And Over
+      B06001013s:     Std. Error: Total Population In The United States: Born In State Of Residence
+      B06001014s:     Std. Error: Total Population In The United States: Born In State Of Residence: Under 5 Years
+      B06001015s:     Std. Error: Total Population In The United States: Born In State Of Residence: 5 To 17 Years
+      B06001016s:     Std. Error: Total Population In The United States: Born In State Of Residence: 18 To 24 Years
+      B06001017s:     Std. Error: Total Population In The United States: Born In State Of Residence: 25 To 34 Years
+      B06001018s:     Std. Error: Total Population In The United States: Born In State Of Residence: 35 To 44 Years
+      B06001019s:     Std. Error: Total Population In The United States: Born In State Of Residence: 45 To 54 Years
+      B06001020s:     Std. Error: Total Population In The United States: Born In State Of Residence: 55 To 59 Years
+      B06001021s:     Std. Error: Total Population In The United States: Born In State Of Residence: 60 And 61 Years
+      B06001022s:     Std. Error: Total Population In The United States: Born In State Of Residence: 62 To 64 Years
+      B06001023s:     Std. Error: Total Population In The United States: Born In State Of Residence: 65 To 74 Years
+      B06001024s:     Std. Error: Total Population In The United States: Born In State Of Residence: 75 Years And Over
+      B06001025s:     Std. Error: Total Population In The United States: Born In Other State In The United States
+      B06001026s:     Std. Error: Total Population In The United States: Born In Other State In The United States: Under 5 Years
+      B06001027s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 5 To 17 Years
+      B06001028s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 18 To 24 Years
+      B06001029s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 25 To 34 Years
+      B06001030s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 35 To 44 Years
+      B06001031s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 45 To 54 Years
+      B06001032s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 55 To 59 Years
+      B06001033s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 60 And 61 Years
+      B06001034s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 62 To 64 Years
+      B06001035s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 65 To 74 Years
+      B06001036s:     Std. Error: Total Population In The United States: Born In Other State In The United States: 75 Years And Over
+      B06001037s:     Std. Error: Total Population In The United States: Native; Born Outside The United States
+      B06001038s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: Under 5 Years
+      B06001039s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 5 To 17 Years
+      B06001040s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 18 To 24 Years
+      B06001041s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 25 To 34 Years
+      B06001042s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 35 To 44 Years
+      B06001043s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 45 To 54 Years
+      B06001044s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 55 To 59 Years
+      B06001045s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 60 And 61 Years
+      B06001046s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 62 To 64 Years
+      B06001047s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 65 To 74 Years
+      B06001048s:     Std. Error: Total Population In The United States: Native; Born Outside The United States: 75 Years And Over
+      B06001049s:     Std. Error: Total Population In The United States: Foreign Born
+      B06001050s:     Std. Error: Total Population In The United States: Foreign Born: Under 5 Years
+      B06001051s:     Std. Error: Total Population In The United States: Foreign Born: 5 To 17 Years
+      B06001052s:     Std. Error: Total Population In The United States: Foreign Born: 18 To 24 Years
+      B06001053s:     Std. Error: Total Population In The United States: Foreign Born: 25 To 34 Years
+      B06001054s:     Std. Error: Total Population In The United States: Foreign Born: 35 To 44 Years
+      B06001055s:     Std. Error: Total Population In The United States: Foreign Born: 45 To 54 Years
+      B06001056s:     Std. Error: Total Population In The United States: Foreign Born: 55 To 59 Years
+      B06001057s:     Std. Error: Total Population In The United States: Foreign Born: 60 And 61 Years
+      B06001058s:     Std. Error: Total Population In The United States: Foreign Born: 62 To 64 Years
+      B06001059s:     Std. Error: Total Population In The United States: Foreign Born: 65 To 74 Years
+      B06001060s:     Std. Error: Total Population In The United States: Foreign Born: 75 Years And Over
+
+
+
+
+--------------------------------------------------------------------------------
+Citation and Use of Data
+--------------------------------------------------------------------------------
+ 
+All persons are granted a limited license to use this documentation and the
+accompanying data, subject to the following conditions:
+
+* Publications and research reports employing the data
+  must cite it appropriately. The citation should include the following:
+
+	  www.socialexplorer.com
+	  New York City, NY: Social Explorer 2014
+
+
+* Citations should also include the URL for this report:
+
+    http://www.socialexplorer.com/pub/reportdata/HtmlResults.aspx?reportid=R10775556
+
+If you have any questions contact info@socialexplorer.com

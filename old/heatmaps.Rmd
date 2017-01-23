@@ -1,0 +1,679 @@
+```{r,echo=FALSE,warning=FALSE}
+library(ggplot2)
+library(reshape2)
+library(matrixStats)
+
+path<-paste0(getwd(),"/")
+
+#Get list of SoVI variables
+SoVI_vars<-as.vector(read.csv(paste0(path,"SoVI_vars.csv"))$Attribute)
+
+#Get list of FEMA Regions
+FEMA_regions<-as.vector(read.csv(paste0(path,"sovi_uncertainty/FEMA_regions/FEMA_queries.csv"))$Subregion)
+
+#Add "US_All" to represent all US counties
+FEMA_regions<-c(FEMA_regions,"US_All")
+
+#Move "US_All" to the front of the list
+FEMA_regions<-FEMA_regions[c(11,1:10)]
+
+#Get list of states
+#Maine (FEMA_1) isn't part of the list because the SoVI calculation wouldn't run. SoVI calculation was only successful when a combination of the three states with the highest number of counties in FEMA 1 (Maine, New Hampshire, Mass) was read in, so we need to use that instead.   
+
+States<-c(read.csv(paste0(path,"sovi_uncertainty/States/State_queries.csv"),stringsAsFactors=FALSE)$Abbrev)
+# States<-c("ME/NH/MA",States)
+
+##Iterate through SoVI_vars and read in value columns of weights contributions
+
+#Declare file prefix 
+inFile<-"_attribute+contrib_all"
+
+##create empty matrices for storing rank and weight values 
+
+#For storing raw weight sums 
+weights.mat<-matrix(nrow=length(SoVI_vars),ncol=length(FEMA_regions))
+rownames(weights.mat)<-SoVI_vars
+colnames(weights.mat)<-FEMA_regions
+
+#For storing weight ranks 
+ranks.mat<-matrix(nrow=length(SoVI_vars),ncol=length(FEMA_regions))
+rownames(ranks.mat)<-SoVI_vars
+colnames(ranks.mat)<-FEMA_regions
+
+##Iterate through FEMA subregions and fill the ranks matrix 
+#"FEMA_0" represents all US counties
+
+for (i in 0:(length(FEMA_regions)-1)){
+
+  #read in CSV corresponding to drop attribute 
+  weights_sum<-read.csv(paste0(path,"sovi_uncertainty/FEMA_regions/FEMA_",toString(i),inFile,".csv"),stringsAsFactors=FALSE)
+  
+  #Rank the variable weights by absolute value - this ranks by magnitude rather than pos/neg contribution
+  #Ranks need to be reversed to sort in descending order 
+  weights_sum$rank<-rank(-abs(as.numeric(weights_sum$rot_sum)),na.last="keep")
+    
+  #Write ranks to "ranks.mat"
+  ranks.mat[,i+1]<-as.numeric(weights_sum$rank)
+  
+  #Write weights to "weights.mat"
+  weights.mat[,i+1]<-as.numeric(weights_sum$rot_sum)
+}
+
+##For plotting text
+#Rescore weights.mat as positive or negative contribution to SoVI
+
+contrib.pos<-weights.mat #Positive contribution to SoVI
+contrib.neg<-weights.mat #Negative contribution to SoVI
+
+for (i in 1:ncol(weights.mat)){
+  contrib.pos[,i]<-ifelse(weights.mat[,i]>0,c(1),c(NA))
+  contrib.neg[,i]<-ifelse(weights.mat[,i]<0,c(1),c(NA))
+  }
+
+```
+
+**Figure 1 - Heat Map for Rank Sums by FEMA region**
+
+```{r Fig_1_USA_FEMA_ranks,fig.height=10,fig.width=8, dev='png',echo=FALSE,warning=FALSE}
+
+#Melt ranks.mat
+ranks.melt<-melt(ranks.mat)
+
+#Melt the contribution matrices 
+pos.melt<-melt(contrib.pos)
+neg.melt<-melt(contrib.neg)
+
+#Reorder variables based on full SoVI rank 
+contrib.all<-read.csv(paste0(path,"sovi_uncertainty/USA/USA_attribute+contrib_all.csv"),stringsAsFactors=FALSE)
+contrib.all$rank<-rank(abs(as.numeric(contrib.all$rot_sum)))
+
+#Read in full SoVI vars - assign human readable attribute names
+var.names<-read.csv(paste0(path,"SoVI_vars.csv"),stringsAsFactors=FALSE)
+
+#Reassign contrib.all attribute names as human readable names
+contrib.all$attribute<-var.names$Desc
+ 
+attrs.ranked<-reorder(contrib.all$attribute,contrib.all$rank)
+
+#Convert Var1 to character
+ranks.melt$Var1<-as.character(ranks.melt$Var1)
+
+#Replace human readable names for var1
+for (i in 1:nrow(ranks.melt)){
+  
+  ranks.melt[i,]$Var1<-var.names[which(var.names$Attribute==ranks.melt[i,]$Var1),]$Desc
+  
+}
+
+ranks.melt$Var1<-factor(ranks.melt$Var1,levels=levels(attrs.ranked))
+
+#Write split positive and negative text values to ranks.melt 
+ranks.melt$value.pos<-ranks.melt$value*pos.melt$value
+ranks.melt$value.neg<-ranks.melt$value*neg.melt$value
+
+#Plot
+
+ranks.heatMap<-ggplot(ranks.melt,aes(Var2,Var1,fill=value))+
+  geom_raster()+
+  scale_fill_gradient2(high='#d0d1e6',mid='#1c9099',low='white',guide="colourbar",na.value='gray90')+
+#   geom_text(aes(label=value.pos, size=4,colour=I("black"),fontface=12))+
+  geom_text(aes(label=value.pos, size=4,colour=I("white")),fontface="bold")+
+  geom_text(aes(label=value.neg, size=4,colour=I("black"),fontface="bold"))+
+  theme(axis.text.x = element_text(angle=90, hjust=.5))+
+  xlab("FEMA Region")+
+  ylab("Attribute Rank")+
+  theme(legend.position="none")+
+  scale_colour_identity() #This ensures the correct colors plot 
+
+plot(ranks.heatMap)
+
+```
+
+**Table 1**
+
+```{r,echo=FALSE,warning=FALSE}
+
+#read in full SoVI scores 
+SoVI_all<-read.csv(paste0(path,"sovi_uncertainty/USA/SoVI_USA_all.csv"),stringsAsFactors=FALSE)
+
+#Remove "USA_All" from FEMA_regions - not needed for this fig 
+FEMA_regions<-FEMA_regions[2:length(FEMA_regions)]
+
+#Create output matrix 
+SoVI.cor<-matrix(nrow=3,ncol=length(FEMA_regions))
+
+rownames(SoVI.cor)<-c("USA-Region","USA-State","Region-State")
+
+#Pair FEMA regions and states for column names 
+FEMA_States<-data.frame(FEMA_regions,States)
+
+colnames(SoVI.cor)<-c(paste0(as.character(FEMA_States$FEMA_regions),"\n(",as.character(FEMA_States$States),")"))
+
+#Replace state abbreviations with full state names for reading files 
+FEMA_States$States<-as.character(FEMA_States$States)
+
+FEMA_States$States<-read.csv(paste0(path,"sovi_uncertainty/States/State_queries.csv"),stringsAsFactors=FALSE)$State
+# FEMA_States[1,]$States<-"Maine_New Hampshire_Massachusetts"
+
+#Read in FEMA/State SoVI values and assign correlations with USA SoVI to matrix 
+
+for (i in 1:(length(names(FEMA_States))+1)){ #Add an additional iteration to run the Region vs. State correlation
+  
+  #Get a new input row for correlation matrix
+  sub_cors<-vector()
+  
+  for (j in 1:length(rownames(FEMA_States))){ 
+    
+    #reset path with each iteration
+    path<-paste0(getwd(),"/")
+    
+    if (i<3){ #Comparing USA to Regions/States
+      
+      #Need to change path based on comparison between USA and FEMA regions/States 
+
+      #Change path from default if USA-State comparison
+      if (names(FEMA_States)[i]=="FEMA_regions"){
+        path<-paste0(path,"sovi_uncertainty/FEMA_regions/")
+      }else if (names(FEMA_States)[i]=="States"){
+        path<-paste0(path,"sovi_uncertainty/States/")
+      }
+  
+      SoVI_sub<-read.csv(paste0(path,"SoVI_",as.character(FEMA_States[,i][j]),"_all.csv"),stringsAsFactors=FALSE)
+    
+      #Subset SoVI_all by SoVI_sub 
+      SoVI_all.sub<-SoVI_all[SoVI_all$Geo_FIPS %in% SoVI_sub$Geo_FIPS,]
+      
+      #Add correlation between SoVI_all and SoVI_sub to "sub_cors"
+      sub_cors<-c(sub_cors,
+                  cor(as.numeric(SoVI_all.sub$sovi),as.numeric(SoVI_sub$sovi),method="spearman"))
+      
+    }else{ #Comparing Regions to States 
+ 
+      p1<-paste0(path,"sovi_uncertainty/FEMA_regions/")
+      SoVI_sub.region<-read.csv(paste0(p1,"SoVI_",as.character(FEMA_States$FEMA_regions[j]),"_all.csv"),stringsAsFactors=FALSE)
+      
+      p2<-paste0(path,"sovi_uncertainty/States/")
+      SoVI_sub.state<-read.csv(paste0(p2,"SoVI_",as.character(FEMA_States$States[j]),"_all.csv"),stringsAsFactors=FALSE)
+    
+      #Subset FEMA region by state counties
+      SoVI_sub.region<-SoVI_sub.region[SoVI_sub.region$Geo_FIPS %in% SoVI_sub.state$Geo_FIPS,]
+      
+      #Get correlation 
+      sub_cors<-c(sub_cors,
+                  cor(as.numeric(SoVI_sub.region$sovi),as.numeric(SoVI_sub.state$sovi),method="spearman"))
+    }
+    
+    
+  }
+  
+  SoVI.cor[i,]<-round(sub_cors,2) 
+  
+}
+
+#Flip the rows for plotting
+SoVI.cor<-SoVI.cor[c(3,2,1),]
+```
+
+```{r Fig_3_USA_FEMA_State_SoVI_rank_correlation,fig.height=3,fig.width=10,dev='png',echo=FALSE,warning=FALSE}
+
+#Melt ranks.mat_cor
+SoVI.cor<-melt(SoVI.cor)
+
+# # Round ranks.mat_cor values
+# ranks.mat_cor$value<-round(ranks.mat_cor$value,2)
+
+cor.heatMap<-ggplot(SoVI.cor,aes(Var2,Var1,fill=value))+
+  geom_raster()+
+  scale_fill_gradient2(high='blue',mid='red',low='white',guide="colourbar",na.value='gray90')+
+  geom_text(aes(label=value, size=4,colour="white",fontface="bold"))+
+  theme(axis.text.x = element_text(angle=0, hjust=.5),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank())+
+  xlab("FEMA Region")+
+  theme(legend.position="none")+
+  scale_colour_identity() #This ensures the correct colors plot 
+
+plot(cor.heatMap)
+
+```
+
+**Figure 2**
+
+```{r Fig_2_prep,fig.height=10,fig.width=20,dev='png',echo=FALSE,warning=FALSE}
+
+##Iterate through FEMA_States and build a matrix for each FEMA region 
+
+#Reset path 
+path<-paste0(getwd(),"/")
+
+#read in & rank full USA SoVI
+USA_weights<-read.csv(paste0(path,"sovi_uncertainty/USA/USA_attribute+contrib_all.csv"),stringsAsFactors=FALSE)
+
+USA_weights$rank<-rank(-abs(as.numeric(USA_weights$rot_sum)),na.last="keep")
+
+#Generate a data frame for storing melted values for each FEMA region 
+region_ranks<-data.frame(Var1=integer(),
+                         Var2=factor(),
+                         value=numeric(),
+                         region_name=character(),
+                         value.pos=numeric(),
+                         value.neg=numeric())
+#                          USA_value.pos=numeric(),
+#                          USA_value.neg=numeric(),
+#                          FEMA_value.pos=numeric(),
+#                          FEMA_value.neg=numeric(),
+#                          State_value.pos=numeric(),
+#                          State_value.neg=numeric())
+
+#Generate a data frame for storing weighted sums
+region_weights<-data.frame(Var1=integer(),
+                         Var2=factor(),
+                         value=numeric(),
+                         region_name=character())
+
+
+for (i in 1:nrow(FEMA_States)){
+
+  #read in CSV for FEMA region & rank weights 
+  
+  path<-paste0(getwd(),"/sovi_uncertainty/FEMA_regions/")
+  FEMA_weights<-read.csv(paste0(path,"FEMA_",toString(i),inFile,".csv"),stringsAsFactors=FALSE)
+  FEMA_weights$rank<-rank(-abs(as.numeric(FEMA_weights$rot_sum)),na.last="keep")
+
+  #read in CSV for State & rank weights 
+  
+  path<-paste0(getwd(),"/sovi_uncertainty/States/")
+  State_weights<-read.csv(paste0(path,FEMA_States[i,]$States,inFile,".csv"),stringsAsFactors=FALSE)
+  State_weights$rank<-rank(-abs(as.numeric(State_weights$rot_sum)),na.last="keep")
+  
+  #Write matrix
+  out_mat<-matrix(nrow=nrow(USA_weights),ncol=3)
+  rownames(out_mat)<-SoVI_vars
+  colnames(out_mat)<-c("USA",paste("FEMA",toString(i)),FEMA_States[i,]$States)
+  
+  #Assign values to matrix
+  out_mat[,1]<-USA_weights$rank
+  out_mat[,2]<-FEMA_weights$rank
+  out_mat[,3]<-State_weights$rank
+  
+  #Melt the matrix and add an identifier column 
+  out_melt<-melt(out_mat)
+  out_melt$region_name<-paste("FEMA",toString(i))
+  
+  ##Get positive/negative contribution values for plotting text 
+  
+  #Assign pos/neg plot text columns relative to out_mat" to "out_melt"
+  
+  #Re-asssign weighted sum values to "out_mat"
+  out_mat[,1]<-as.numeric(USA_weights$rot_sum)
+  out_mat[,2]<-as.numeric(FEMA_weights$rot_sum)
+  out_mat[,3]<-as.numeric(State_weights$rot_sum)
+
+
+  contrib.pos<-out_mat #Positive contribution to SoVI
+  contrib.neg<-out_mat #Negative contribution to SoVI
+  
+  for (j in 1:ncol(out_mat)){
+    contrib.pos[,j]<-ifelse(out_mat[,j]>0,c(1),c(NA))
+    contrib.neg[,j]<-ifelse(out_mat[,j]<0,c(1),c(NA))
+    }
+  
+  #Melt contrib.pos/neg
+  contrib.pos<-melt(contrib.pos)$value
+  contrib.neg<-melt(contrib.neg)$value
+  
+  #Assign pos/neg to "out_melt"
+  out_melt$value.pos<-out_melt$value*contrib.pos
+  out_melt$value.neg<-out_melt$value*contrib.neg
+
+  
+  #Add out_melt to "region_ranks"
+  region_ranks<-rbind(region_ranks,out_melt)
+  
+  #For weighted sum reference - melt weighted sum values 
+  out_melt2<-melt(out_mat)
+  out_melt2$region_name<-paste("FEMA",toString(i))
+
+  region_weights<-rbind(region_weights,out_melt2)
+}
+
+#convert "region name" field to a factor
+region_ranks$region_name<-as.factor(region_ranks$region_name)
+
+#reorder "region_name" levels so that "FEMA_10 falls last"
+region_ranks$region_name<-factor(region_ranks$region_name,levels(region_ranks$region_name)[c(1,3:length(levels(region_ranks$region_name)),2)])
+
+#Reorder Var1 factor levels (need "attrs.ranked" from the original ranks matrix)
+region_ranks$Var1<-factor(region_ranks$Var1,levels=levels(attrs.ranked))
+
+#Add newline characters to ME/NH/MASS for plotting
+levels(region_ranks$Var2)[which(levels(region_ranks$Var2)=="Maine_New Hampshire_Massachusetts")]<-"ME/NH/MA"
+
+##Plot
+# 
+# regions.heatMap<-ggplot(region_ranks,aes(Var2,Var1,fill=value))+
+#   geom_raster()+
+#   scale_fill_gradient2(high='#253494',mid='#7fcdbb',low='white',guide="colourbar",na.value='gray90')+
+# #   geom_text(aes(label=value, size=4,fontface="bold"))+
+#   geom_text(aes(label=value.pos, size=4,colour=I("white"),fontface="bold"))+
+#   geom_text(aes(label=value.neg, size=4,colour=I("black"),fontface="bold"))+
+#   theme(axis.text.x = element_text(angle=90, hjust=1))+
+#   xlab("FEMA Region")+
+#   ylab("Attribute Rank")+
+#   theme(legend.position="none")+
+#   facet_grid(~region_name,scales="free_x")+
+#   scale_colour_identity() #This ensures the correct colors plot 
+# 
+# plot(regions.heatMap)
+
+
+```
+
+```{r USA_FEMA_state_weights,fig.height=10,fig.width=20,dev='png',eval=FALSE,echo=FALSE,warning=FALSE}
+
+##Reorder variables for plotting
+#convert "region name" field to a factor
+region_weights$region_name<-as.factor(region_weights$region_name)
+
+#reorder "region_name" levels so that "FEMA_10 falls last"
+region_weights$region_name<-factor(region_weights$region_name,levels(region_weights$region_name)[c(1,3:length(levels(region_weights$region_name)),2)])
+
+#Reorder Var1 factor levels (need "attrs.ranked" from the original ranks matrix)
+region_weights$Var1<-factor(region_weights$Var1,levels=levels(attrs.ranked))
+
+#Add newline characters to ME/NH/MASS for plotting
+levels(region_weights$Var2)[which(levels(region_weights$Var2)=="Maine_New Hampshire_Massachusetts")]<-"ME/NH/MA"
+
+#round weighted sum values
+region_weights$value<-round(region_weights$value,2)
+
+regions.heatMap2<-ggplot(region_weights,aes(Var2,Var1,fill=value))+
+  geom_raster()+
+  scale_fill_gradient2(high='#5e3c99',mid='white',low='#e66101',guide="colourbar",na.value='gray90')+
+  geom_text(aes(label=value, size=4))+
+  theme(axis.text.x = element_text(angle=90, hjust=1))+
+  xlab("FEMA Region")+
+  ylab("Weighted Sum Contribution to SoVI")+
+  theme(legend.position="none")+
+  facet_grid(~region_name,scales="free_x")+
+  scale_colour_identity() #This ensures the correct colors plot 
+
+plot(regions.heatMap2)
+
+```
+
+```{r Fig_2_USA_FEMA_State_ranks,fig.height=10,fig.width=20,echo=FALSE,dev='png',warning=FALSE}
+
+#Get rid of 'USA' repetition in the rank comparison figures
+
+
+#Abbreviate ME/NH/MASS for plotting
+levels(region_weights$Var2)[which(levels(region_weights$Var2)=="Maine_New Hampshire_Massachusetts")]<-"ME/NH/MA"
+
+rankwt<-region_weights
+
+#Copy value for filling heatmap
+rankwt$value2<-rankwt$value
+
+#Combine FEMA region rank & weights before subset 
+rankwt$value<-paste0(as.character(region_ranks$value)," (",as.character(round(region_weights$value,2)),")")
+
+##Create an empty dataframe for storing regions w/ USA removed
+# rankwt2<-data.frame(Var1=factor(),
+#                     Var2=factor(),
+#                     value="character",
+#                     region_name=factor())
+
+#Get a new dataframe for the revised heatmap
+rankwt2<-data.frame()
+
+#Preserve full USA ranks using just one of the FEMA regions
+USA_ranks<-rankwt[rankwt$Var2=="USA" & rankwt$region_name=="FEMA 1",]
+USA_ranks$region_name<-rep("USA",nrow(USA_ranks))
+
+#Add USA_ranks to the beginning of new dataframe 
+rankwt2<-rbind(rankwt2,USA_ranks)
+
+##Iterate through FEMA regions 2-10 & get rid of USA
+#rbind each FEMA region to a rankwt2
+
+for (i in 1:10){
+  
+  rankwt_subset<-rankwt[rankwt$region_name==paste("FEMA",as.character(i)) & rankwt$Var2!="USA",]
+  rankwt2<-rbind(rankwt2,rankwt_subset)
+  
+}
+
+#convert "region name" field to a factor
+rankwt2$region_name<-as.factor(rankwt2$region_name)
+
+#reorder "region_name" levels so that USA is first and FEMA_10 is last
+rankwt2$region_name<-factor(rankwt2$region_name,levels(rankwt2$region_name)[c(length(levels(rankwt2$region_name)),1,3:(length(levels(rankwt2$region_name))-1),2)])
+
+##Assign human-readable variable names
+#Convert Var1 to character
+rankwt2$Var1<-as.character(rankwt2$Var1)
+
+#Replace human readable names for var1
+for (i in 1:nrow(rankwt2)){
+  
+  rankwt2[i,]$Var1<-var.names[which(var.names$Attribute==rankwt2[i,]$Var1),]$Desc
+  
+}
+
+rankwt2$Var1<-factor(rankwt2$Var1,levels=levels(attrs.ranked))
+
+
+#Plot heatmap
+regions.heatMap3<-ggplot(rankwt2,aes(Var2,Var1,fill=value2))+
+  geom_raster()+
+  scale_fill_gradient2(high='#67B3B9',mid='#fff7fb',low='#67B3B9',guide="colourbar",na.value='gray90')+
+  geom_text(aes(label=value, size=4))+
+  theme(axis.text.x = element_text(angle=90, hjust=1))+
+  xlab("FEMA Region")+
+  ylab("Weighted Sum Contribution to SoVI")+
+  theme(legend.position="none")+
+  facet_grid(~region_name,scales="free_x")+
+  scale_colour_identity() #This ensures the correct colors plot 
+
+plot(regions.heatMap3)
+```
+
+**Figure 4**
+
+```{r fig4_prep,echo=FALSE,warning=FALSE}
+
+#Reset path
+path<-paste0(getwd(),"/")
+
+##Iterate through SoVI_vars and read in value columns of weights contributions
+
+#Declare file prefix 
+inFile<-"sovi_uncertainty/USA/USA_attribute+contrib_drop_"
+
+##create empty matrices for storing rank and weight values 
+
+# #For storing weight values
+weights.mat<-matrix(nrow=length(SoVI_vars),ncol=length(SoVI_vars))
+rownames(weights.mat)<-SoVI_vars
+colnames(weights.mat)<-SoVI_vars
+
+#For storing weight ranks 
+ranks.mat<-matrix(nrow=length(SoVI_vars),ncol=length(SoVI_vars))
+rownames(ranks.mat)<-SoVI_vars
+colnames(ranks.mat)<-SoVI_vars
+
+##Iterate through SoVI_vars and fill the weights matrix 
+
+for (var in SoVI_vars){
+  
+  #read in CSV corresponding to drop attribute 
+  weights_sum<-read.csv(paste0(path,inFile,var,".csv"),stringsAsFactors=FALSE)
+
+  ##Insert the drop attribute into weights_sum as an NA value 
+  
+  #get variable position in list 
+  var.pos<-which(SoVI_vars==var)
+
+  #generate a row for the dropped attribute
+  drop_attr<-c(0,var,NA)
+  
+  if (var.pos>1 & var.pos<length(SoVI_vars)){ #Insert drop attribute among rows if between first & last indices
+    
+    #get all rows preceding drop variable 
+    weights.before<-weights_sum[1:var.pos-1,]
+    
+    #get all rows following drop variable 
+    weights.after<-weights_sum[var.pos:length(weights_sum$rot_sum),]
+    
+    #add the drop attribute row 
+    weights.before<-rbind(weights.before,drop_attr)
+                          
+    #update "weights_sum"
+    weights_sum<-rbind(weights.before,weights.after)
+    
+  }else if (var.pos==1){ #Insert dropped attribute row at top of df if 1st attribute 
+    
+    weights_sum<-rbind(drop_attr,weights_sum) 
+    
+  }else if (var.pos==length(SoVI_vars)){ #Insert dropped attribute row at bottom of df if last attribute 
+    
+    weights_sum<-rbind(weights_sum,drop_attr)
+    
+  }
+  
+  #Write weight sum to "weights.mat"
+  weights.mat[,var.pos]<-round(as.numeric(weights_sum$rot_sum),2)
+}
+
+##Iterate through SoVI_vars and fill the ranks matrix 
+
+for (var in SoVI_vars){
+
+#   #diagnostics only 
+#   var<-"MEDAGE_ACS"
+  
+  #read in CSV corresponding to drop attribute 
+  weights_sum<-read.csv(paste0(path,inFile,var,".csv"),stringsAsFactors=FALSE)
+  
+  #Rank the variable weights by absolute value - this ranks by magnitude rather than pos/neg contribution
+  #Ranks need to be reversed to sort in descending order 
+  weights_sum$rank<-rank(-abs(as.numeric(weights_sum$rot_sum)),na.last="keep")
+  
+  ##Insert the drop attribute into weights_sum as an NA value 
+  
+  #get variable position in list 
+  var.pos<-which(SoVI_vars==var)
+
+  #generate a row for the dropped attribute
+  drop_attr<-c(0,var,NA,NA)
+  
+  if (var.pos>1 & var.pos<length(SoVI_vars)){ #Insert drop attribute among rows if between first & last indices
+    
+    #get all rows preceding drop variable 
+    weights.before<-weights_sum[1:var.pos-1,]
+    
+    #get all rows following drop variable 
+    weights.after<-weights_sum[var.pos:length(weights_sum$rot_sum),]
+    
+    #add the drop attribute row 
+    weights.before<-rbind(weights.before,drop_attr)
+                          
+    #update "weights_sum"
+    weights_sum<-rbind(weights.before,weights.after)
+    
+  }else if (var.pos==1){ #Insert dropped attribute row at top of df if 1st attribute 
+    
+    weights_sum<-rbind(drop_attr,weights_sum) 
+    
+  }else if (var.pos==length(SoVI_vars)){ #Insert dropped attribute row at bottom of df if last attribute 
+    
+    weights_sum<-rbind(weights_sum,drop_attr)
+    
+  }
+  
+  #Write ranks to "ranks.mat"
+  ranks.mat[,var.pos]<-as.numeric(weights_sum$rank)
+}
+
+```
+
+```{r Fig_4_USA_DropOne,fig.height=10,fig.width=15, dev='png',echo=FALSE,warning=FALSE}
+
+#Melt ranks.mat
+ranks.melt<-melt(ranks.mat)
+
+#Reorder variables based on full SoVI rank 
+contrib.all<-read.csv(paste0(path,"sovi_uncertainty/USA/USA_attribute+contrib_all.csv"),stringsAsFactors=FALSE)
+contrib.all$rank<-rank(abs(as.numeric(contrib.all$rot_sum)))
+
+#Read in full SoVI vars - assign human readable attribute names
+var.names<-read.csv(paste0(path,"SoVI_vars.csv"),stringsAsFactors=FALSE)
+
+#Reassign contrib.all attribute names as human readable names
+contrib.all$attribute<-var.names$Desc
+ 
+attrs.ranked<-reorder(contrib.all$attribute,contrib.all$rank)
+
+#Convert Var1,Var2 to character
+ranks.melt$Var1<-as.character(ranks.melt$Var1)
+ranks.melt$Var2<-as.character(ranks.melt$Var2)
+
+#Replace human readable names for var1 & var2
+for (i in 1:nrow(ranks.melt)){
+  
+  ranks.melt[i,]$Var1<-var.names[which(var.names$Attribute==ranks.melt[i,]$Var1),]$Desc
+  ranks.melt[i,]$Var2<-var.names[which(var.names$Attribute==ranks.melt[i,]$Var2),]$Desc  
+  
+}
+
+ranks.melt$Var1<-factor(ranks.melt$Var1,levels=levels(attrs.ranked))
+ranks.melt$Var2<-factor(ranks.melt$Var2,levels=rev(levels(attrs.ranked)))
+
+ranks.heatMap<-ggplot(ranks.melt,aes(Var2,Var1,fill=value))+
+  geom_raster()+
+  scale_fill_gradient2(high='royalblue1',mid='goldenrod1',low='white',guide="colourbar",na.value='gray90')+
+  geom_text(aes(label=value, size=4))+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  xlab("Drop Attribute")+
+  ylab("Attribute Rank")+
+  theme(legend.position="none")
+#   axis.text.y=element_blank()+
+#   scale_x_reverse()+
+#   scale_y_reverse()+
+#   theme_bw()
+
+plot(ranks.heatMap)
+
+```
+
+```{r Fig_4_USA_DropOne_w_direction,fig.height=10,fig.width=15, dev='png',echo=FALSE,warning=FALSE}
+
+##Get matrices (melted) for directionality of contribution to SoVI
+contrib.pos<-melt(ifelse(weights.mat>0,c(1),c(NA)))
+contrib.neg<-melt(ifelse(weights.mat>0,c(NA),c(1)))
+
+#Add columns to ranks.melt 
+ranks.melt$value.pos<-ranks.melt$value*contrib.pos$value
+ranks.melt$value.neg<-ranks.melt$value*contrib.neg$value
+
+ranks.heatMap2<-ggplot(ranks.melt,aes(Var2,Var1,fill=value))+
+  geom_raster()+
+  scale_fill_gradient2(high='royalblue1',mid='goldenrod1',low='white',guide="colourbar",na.value='gray90')+
+#   geom_text(aes(label=value, size=4))+
+  geom_text(aes(label=value.pos, size=4,colour=I("white"),fontface="bold"))+
+  geom_text(aes(label=value.neg, size=4,colour=I("black"),fontface="bold"))+
+  theme(axis.text.x = element_text(angle=45, hjust=1))+
+  xlab("Drop Attribute")+
+  ylab("Attribute Rank")+
+  theme(legend.position="none")+
+  scale_colour_identity() #This ensures the correct colors plot   
+  
+#   axis.text.y=element_blank()+
+#   scale_x_reverse()+
+#   scale_y_reverse()+
+#   theme_bw()
+
+plot(ranks.heatMap2)
+
+```

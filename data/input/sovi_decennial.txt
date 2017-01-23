@@ -1,0 +1,529 @@
+--------------------------------------------------------------------------------
+Codebook for Social Explorer report ID: R10728360
+--------------------------------------------------------------------------------
+
+Contents
+    - Table Summary
+    - Data Dictionary
+    - Citation and Use
+
+
+--------------------------------------------------------------------------------
+Table Summary
+--------------------------------------------------------------------------------
+ 
+Survey:           Census 2010
+Dataset:          Summary File 1
+Tables:
+
+      1. Total Population
+         Universe:  Total population
+         Name:      P1
+         Variables:
+            P0010001:   Total
+
+
+      2. Race
+         Universe:  Total population
+         Name:      P3
+         Variables:
+            P0030001:   Total
+            P0030002:      White alone
+            P0030003:      Black or African American alone
+            P0030004:      American Indian and Alaska Native alone
+            P0030005:      Asian alone
+            P0030006:      Native Hawaiian and Other Pacific Islander alone
+            P0030007:      Some Other Race alone
+            P0030008:      Two or More Races
+
+
+      3. Hispanic Or Latino Origin
+         Universe:  Total population
+         Name:      P4
+         Variables:
+            P0040001:   Total
+            P0040002:      Not Hispanic or Latino
+            P0040003:      Hispanic or Latino
+
+
+      4. Hispanic Or Latino Origin By Race
+         Universe:  Total population
+         Name:      P5
+         Variables:
+            P0050001:   Total
+            P0050002:      Not Hispanic or Latino
+            P0050003:         White alone
+            P0050004:         Black or African American alone
+            P0050005:         American Indian and Alaska Native alone
+            P0050006:         Asian alone
+            P0050007:         Native Hawaiian and Other Pacific Islander alone
+            P0050008:         Some Other Race alone
+            P0050009:         Two or More Races
+            P0050010:      Hispanic or Latino
+            P0050011:         White alone
+            P0050012:         Black or African American alone
+            P0050013:         American Indian and Alaska Native alone
+            P0050014:         Asian alone
+            P0050015:         Native Hawaiian and Other Pacific Islander alone
+            P0050016:         Some Other Race alone
+            P0050017:         Two or More Races
+
+
+      5. Sex By Age
+         Universe:  Total population
+         Name:      P12
+         Variables:
+            P0120001:   Total
+            P0120002:      Male
+            P0120003:         Under 5 years
+            P0120004:         5 to 9 years
+            P0120005:         10 to 14 years
+            P0120006:         15 to 17 years
+            P0120007:         18 and 19 years
+            P0120008:         20 years
+            P0120009:         21 years
+            P0120010:         22 to 24 years
+            P0120011:         25 to 29 years
+            P0120012:         30 to 34 years
+            P0120013:         35 to 39 years
+            P0120014:         40 to 44 years
+            P0120015:         45 to 49 years
+            P0120016:         50 to 54 years
+            P0120017:         55 to 59 years
+            P0120018:         60 and 61 years
+            P0120019:         62 to 64 years
+            P0120020:         65 and 66 years
+            P0120021:         67 to 69 years
+            P0120022:         70 to 74 years
+            P0120023:         75 to 79 years
+            P0120024:         80 to 84 years
+            P0120025:         85 years and over
+            P0120026:      Female
+            P0120027:         Under 5 years
+            P0120028:         5 to 9 years
+            P0120029:         10 to 14 years
+            P0120030:         15 to 17 years
+            P0120031:         18 and 19 years
+            P0120032:         20 years
+            P0120033:         21 years
+            P0120034:         22 to 24 years
+            P0120035:         25 to 29 years
+            P0120036:         30 to 34 years
+            P0120037:         35 to 39 years
+            P0120038:         40 to 44 years
+            P0120039:         45 to 49 years
+            P0120040:         50 to 54 years
+            P0120041:         55 to 59 years
+            P0120042:         60 and 61 years
+            P0120043:         62 to 64 years
+            P0120044:         65 and 66 years
+            P0120045:         67 to 69 years
+            P0120046:         70 to 74 years
+            P0120047:         75 to 79 years
+            P0120048:         80 to 84 years
+            P0120049:         85 years and over
+
+
+      6. Median Age By Sex
+         Universe:  Total population
+         Name:      P13
+         Variables:
+            P0130001:   Median age
+            P0130002:      Male
+            P0130003:      Female
+
+
+      7. Household Type
+         Universe:  Households
+         Name:      P18
+         Variables:
+            P0180001:   Total
+            P0180002:      Family households
+            P0180003:         Husband-wife family
+            P0180004:         Other family
+            P0180005:            Male householder, no wife present
+            P0180006:            Female householder, no husband present
+            P0180007:      Nonfamily households
+            P0180008:         Householder living alone
+            P0180009:         Householder not living alone
+
+
+      8. Household Size By Household Type By Presence Of Own Children
+         Universe:  Households
+         Name:      P19
+         Variables:
+            P0190001:   Total
+            P0190002:      1-person household
+            P0190003:         Male householder
+            P0190004:         Female householder
+            P0190005:      2-or-more-person household
+            P0190006:         Family households
+            P0190007:            Husband-wife family
+            P0190008:               With own children under 18 years
+            P0190009:               No own children under 18 years
+            P0190010:            Other family
+            P0190011:               Male householder, no wife present
+            P0190012:                  With own children under 18 years
+            P0190013:                  No own children under 18 years
+            P0190014:               Female householder, no husband present
+            P0190015:                  With own children under 18 years
+            P0190016:                  No own children under 18 years
+            P0190017:         Nonfamily households
+            P0190018:            Male householder
+            P0190019:            Female householder
+
+
+      9. Group Quarters Population By Group Quarters Type
+         Universe:  Population in group quarters
+         Name:      P42
+         Variables:
+            P0420001:   Total
+            P0420002:      Institutionalized population
+            P0420003:         Correctional facilities for adults
+            P0420004:         Juvenile facilities
+            P0420005:         Nursing facilities/Skilled-nursing facilities
+            P0420006:         Other institutional facilities
+            P0420007:      Noninstitutionalized population
+            P0420008:         College/University student housing
+            P0420009:         Military quarters
+            P0420010:         Other noninstitutional facilities
+
+
+      10. Group Quarters Population By Sex By Age By Group Quarters Type
+          Universe:  Population in group quarters
+          Name:      P43
+          Variables:
+             P0430001:   Total
+             P0430002:      Male
+             P0430003:         Under 18 years
+             P0430004:            Institutionalized population
+             P0430005:               Correctional facilities for adults
+             P0430006:               Juvenile facilities
+             P0430007:               Nursing facilities/Skilled-nursing facilities
+             P0430008:               Other institutional facilities
+             P0430009:            Noninstitutionalized population
+             P0430010:               College/University student housing
+             P0430011:               Military quarters
+             P0430012:               Other noninstitutional facilities
+             P0430013:         18 to 64 years
+             P0430014:            Institutionalized population
+             P0430015:               Correctional facilities for adults
+             P0430016:               Juvenile facilities
+             P0430017:               Nursing facilities/Skilled-nursing facilities
+             P0430018:               Other institutional facilities
+             P0430019:            Noninstitutionalized population
+             P0430020:               College/University student housing
+             P0430021:               Military quarters
+             P0430022:               Other noninstitutional facilities
+             P0430023:         65 years and over
+             P0430024:            Institutionalized population
+             P0430025:               Correctional facilities for adults
+             P0430026:               Juvenile facilities
+             P0430027:               Nursing facilities/Skilled-nursing facilities
+             P0430028:               Other institutional facilities
+             P0430029:            Noninstitutionalized population
+             P0430030:               College/University student housing
+             P0430031:               Military quarters
+             P0430032:               Other noninstitutional facilities
+             P0430033:      Female
+             P0430034:         Under 18 years
+             P0430035:            Institutionalized population
+             P0430036:               Correctional facilities for adults
+             P0430037:               Juvenile facilities
+             P0430038:               Nursing facilities/Skilled-nursing facilities
+             P0430039:               Other institutional facilities
+             P0430040:            Noninstitutionalized population
+             P0430041:               College/University student housing
+             P0430042:               Military quarters
+             P0430043:               Other noninstitutional facilities
+             P0430044:         18 to 64 years
+             P0430045:            Institutionalized population
+             P0430046:               Correctional facilities for adults
+             P0430047:               Juvenile facilities
+             P0430048:               Nursing facilities/Skilled-nursing facilities
+             P0430049:               Other institutional facilities
+             P0430050:            Noninstitutionalized population
+             P0430051:               College/University student housing
+             P0430052:               Military quarters
+             P0430053:               Other noninstitutional facilities
+             P0430054:         65 years and over
+             P0430055:            Institutionalized population
+             P0430056:               Correctional facilities for adults
+             P0430057:               Juvenile facilities
+             P0430058:               Nursing facilities/Skilled-nursing facilities
+             P0430059:               Other institutional facilities
+             P0430060:            Noninstitutionalized population
+             P0430061:               College/University student housing
+             P0430062:               Military quarters
+             P0430063:               Other noninstitutional facilities
+
+
+      11. Housing Units
+          Universe:  Housing units
+          Name:      H1
+          Variables:
+             H0010001:   Total
+
+
+      12. Occupancy Status
+          Universe:  Housing units
+          Name:      H3
+          Variables:
+             H0030001:   Total
+             H0030002:      Occupied
+             H0030003:      Vacant
+
+
+      13. Tenure
+          Universe:  Occupied housing units
+          Name:      H4
+          Variables:
+             H0040001:   Total
+             H0040002:      Owned with a mortgage or a loan
+             H0040003:      Owned free and clear
+             H0040004:      Renter occupied
+
+
+      14. Total Population In Occupied Housing Units
+          Universe:  Population in occupied housing units
+          Name:      H10
+          Variables:
+             H0100001:   Total
+
+
+
+
+
+ 
+ 
+ 
+--------------------------------------------------------------------------------
+Data Dictionary
+--------------------------------------------------------------------------------
+ 
+Variables 
+      NAME:           Area Name-Legal/Statistical Area Description
+      QName:          Qualifying Name
+      AREALAND:       Area (Land)
+      AREAWATR:       Area (Water)
+      SUMLEV:         Summary Level
+      GEOCOMP:        Geographic Component
+      REGION:         Region
+      DIVISION:       Division
+      FIPS:           FIPS
+      STATE:          State (FIPS)
+      COUNTY:         County
+      P0010001:       Total population
+      P0030001:       Total population
+      P0030002:       White alone
+      P0030003:       Black or African American alone
+      P0030004:       American Indian and Alaska Native alone
+      P0030005:       Asian alone
+      P0030006:       Native Hawaiian and Other Pacific Islander alone
+      P0030007:       Some Other Race alone
+      P0030008:       Two or More Races
+      P0040001:       Total population
+      P0040002:       Not Hispanic or Latino
+      P0040003:       Hispanic or Latino
+      P0050001:       Total population
+      P0050002:       Not Hispanic or Latino
+      P0050003:       Not Hispanic or Latino: White alone
+      P0050004:       Not Hispanic or Latino: Black or African American alone
+      P0050005:       Not Hispanic or Latino: American Indian and Alaska Native alone
+      P0050006:       Not Hispanic or Latino: Asian alone
+      P0050007:       Not Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone
+      P0050008:       Not Hispanic or Latino: Some Other Race alone
+      P0050009:       Not Hispanic or Latino: Two or More Races
+      P0050010:       Hispanic or Latino
+      P0050011:       Not Hispanic or Latino: Hispanic or Latino: White alone
+      P0050012:       Not Hispanic or Latino: Hispanic or Latino: Black or African American alone
+      P0050013:       Not Hispanic or Latino: Hispanic or Latino: American Indian and Alaska Native alone
+      P0050014:       Not Hispanic or Latino: Hispanic or Latino: Asian alone
+      P0050015:       Not Hispanic or Latino: Hispanic or Latino: Native Hawaiian and Other Pacific Islander alone
+      P0050016:       Not Hispanic or Latino: Hispanic or Latino: Some Other Race alone
+      P0050017:       Not Hispanic or Latino: Hispanic or Latino: Two or More Races
+      P0120001:       Total population
+      P0120002:       Male
+      P0120003:       Male: Under 5 years
+      P0120004:       Male: 5 to 9 years
+      P0120005:       Male: 10 to 14 years
+      P0120006:       Male: 15 to 17 years
+      P0120007:       Male: 18 and 19 years
+      P0120008:       Male: 20 years
+      P0120009:       Male: 21 years
+      P0120010:       Male: 22 to 24 years
+      P0120011:       Male: 25 to 29 years
+      P0120012:       Male: 30 to 34 years
+      P0120013:       Male: 35 to 39 years
+      P0120014:       Male: 40 to 44 years
+      P0120015:       Male: 45 to 49 years
+      P0120016:       Male: 50 to 54 years
+      P0120017:       Male: 55 to 59 years
+      P0120018:       Male: 60 and 61 years
+      P0120019:       Male: 62 to 64 years
+      P0120020:       Male: 65 and 66 years
+      P0120021:       Male: 67 to 69 years
+      P0120022:       Male: 70 to 74 years
+      P0120023:       Male: 75 to 79 years
+      P0120024:       Male: 80 to 84 years
+      P0120025:       Male: 85 years and over
+      P0120026:       Male: Female
+      P0120027:       Male: Female: Under 5 years
+      P0120028:       Male: Female: 5 to 9 years
+      P0120029:       Male: Female: 10 to 14 years
+      P0120030:       Male: Female: 15 to 17 years
+      P0120031:       Male: Female: 18 and 19 years
+      P0120032:       Male: Female: 20 years
+      P0120033:       Male: Female: 21 years
+      P0120034:       Male: Female: 22 to 24 years
+      P0120035:       Male: Female: 25 to 29 years
+      P0120036:       Male: Female: 30 to 34 years
+      P0120037:       Male: Female: 35 to 39 years
+      P0120038:       Male: Female: 40 to 44 years
+      P0120039:       Male: Female: 45 to 49 years
+      P0120040:       Male: Female: 50 to 54 years
+      P0120041:       Male: Female: 55 to 59 years
+      P0120042:       Male: Female: 60 and 61 years
+      P0120043:       Male: Female: 62 to 64 years
+      P0120044:       Male: Female: 65 and 66 years
+      P0120045:       Male: Female: 67 to 69 years
+      P0120046:       Male: Female: 70 to 74 years
+      P0120047:       Male: Female: 75 to 79 years
+      P0120048:       Male: Female: 80 to 84 years
+      P0120049:       Male: Female: 85 years and over
+      P0130001:       Median age
+      P0130002:       Median age: Male
+      P0130003:       Median age: Female
+      P0180001:       Households
+      P0180002:       Households: Family households
+      P0180003:       Households: Family households: Husband-wife family
+      P0180004:       Households: Family households: Other family
+      P0180005:       Households: Family households: Other family: Male householder, no wife present
+      P0180006:       Households: Family households: Other family: Female householder, no husband present
+      P0180007:       Households: Family households: Other family: Nonfamily households
+      P0180008:       Households: Family households: Other family: Nonfamily households: Householder living alone
+      P0180009:       Households: Family households: Other family: Nonfamily households: Householder not living alone
+      P0190001:       Households
+      P0190002:       Households: 1-person household
+      P0190003:       Households: 1-person household: Male householder
+      P0190004:       Households: 1-person household: Female householder
+      P0190005:       Households: 1-person household: 2-or-more-person household
+      P0190006:       Households: 1-person household: 2-or-more-person household: Family households
+      P0190007:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family
+      P0190008:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: With own children under 18 years
+      P0190009:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: No own children under 18 years
+      P0190010:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family
+      P0190011:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present
+      P0190012:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: With own children under 18 years
+      P0190013:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: No own children under 18 years
+      P0190014:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present
+      P0190015:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present: With own children under 18 years
+      P0190016:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present: No own children under 18 years
+      P0190017:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present: Nonfamily households
+      P0190018:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present: Nonfamily households: Male householder
+      P0190019:       Households: 1-person household: 2-or-more-person household: Family households: Husband-wife family: Other family: Male householder, no wife present: Female householder, no husband present: Nonfamily households: Female householder
+      P0420001:       Population in group quarters
+      P0420002:       Population in group quarters: Institutionalized population
+      P0420003:       Population in group quarters: Institutionalized population: Correctional facilities for adults
+      P0420004:       Population in group quarters: Institutionalized population: Juvenile facilities
+      P0420005:       Population in group quarters: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0420006:       Population in group quarters: Institutionalized population: Other institutional facilities
+      P0420007:       Population in group quarters: Institutionalized population: Noninstitutionalized population
+      P0420008:       Population in group quarters: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0420009:       Population in group quarters: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0420010:       Population in group quarters: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430001:       Population in group quarters
+      P0430002:       Population in group quarters: Male
+      P0430003:       Population in group quarters: Male: Under 18 years
+      P0430004:       Population in group quarters: Male: Under 18 years: Institutionalized population
+      P0430005:       Population in group quarters: Male: Under 18 years: Institutionalized population: Correctional facilities for adults
+      P0430006:       Population in group quarters: Male: Under 18 years: Institutionalized population: Juvenile facilities
+      P0430007:       Population in group quarters: Male: Under 18 years: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430008:       Population in group quarters: Male: Under 18 years: Institutionalized population: Other institutional facilities
+      P0430009:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population801-802, 900-901, 903-904)
+      P0430010:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430011:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430012:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430013:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years
+      P0430014:       Population in group quarters: Male: Under 18 years: Noninstitutionalized population: 18 to 64 years: Institutionalized population
+      P0430015:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Correctional facilities for adults
+      P0430016:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Juvenile facilities
+      P0430017:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430018:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Other institutional facilities
+      P0430019:       Population in group quarters: Male: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population
+      P0430020:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430021:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430022:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430023:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over
+      P0430024:       Population in group quarters: Male: Under 18 years: Noninstitutionalized population: 18 to 64 years: Noninstitutionalized population: 65 years and over: Institutionalized population
+      P0430025:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Correctional facilities for adults
+      P0430026:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Juvenile facilities
+      P0430027:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430028:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Other institutional facilities
+      P0430029:       Population in group quarters: Male: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population
+      P0430030:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430031:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430032:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430033:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female
+      P0430034:       Population in group quarters: Male: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years
+      P0430035:       Population in group quarters: Male: Under 18 years: Noninstitutionalized population: 18 to 64 years: Noninstitutionalized population: 65 years and over: Noninstitutionalized population: Female: Under 18 years: Institutionalized population
+      P0430036:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Correctional facilities for adults
+      P0430037:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Juvenile facilities
+      P0430038:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430039:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Other institutional facilities
+      P0430040:       Population in group quarters: Male: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: 65 years and over: Institutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population
+      P0430041:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430042:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430043:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430044:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years
+      P0430045:       Population in group quarters: Male: Under 18 years: Noninstitutionalized population: 18 to 64 years: Noninstitutionalized population: 65 years and over: Noninstitutionalized population: Female: Under 18 years: Noninstitutionalized population: 18 to 64 years: Institutionalized population
+      P0430046:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Correctional facilities for adults
+      P0430047:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Juvenile facilities
+      P0430048:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430049:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Other institutional facilities
+      P0430050:       Population in group quarters: Male: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: 65 years and over: Institutionalized population: Female: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population
+      P0430051:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430052:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430053:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      P0430054:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over
+      P0430055:       Population in group quarters: Male: Under 18 years: Noninstitutionalized population: 18 to 64 years: Noninstitutionalized population: 65 years and over: Noninstitutionalized population: Female: Under 18 years: Noninstitutionalized population: 18 to 64 years: Noninstitutionalized population: 65 years and over: Institutionalized population
+      P0430056:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Correctional facilities for adults
+      P0430057:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Juvenile facilities
+      P0430058:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Nursing facilities/Skilled-nursing facilities
+      P0430059:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Other institutional facilities
+      P0430060:       Population in group quarters: Male: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: 65 years and over: Institutionalized population: Female: Under 18 years: Institutionalized population: 18 to 64 years: Institutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population
+      P0430061:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: College/University student housing
+      P0430062:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Military quarters
+      P0430063:       Population in group quarters: Male: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Female: Under 18 years: Institutionalized population: Noninstitutionalized population: 18 to 64 years: Institutionalized population: Noninstitutionalized population: 65 years and over: Institutionalized population: Noninstitutionalized population: Other noninstitutional facilities
+      H0010001:       Housing units: Total
+      H0030001:       Housing units
+      H0030002:       Housing units: Occupied
+      H0030003:       Housing units: Vacant
+      H0040001:       Occupied housing units
+      H0040002:       Occupied housing units: Owned with a mortgage or a loan
+      H0040003:       Occupied housing units: Owned free and clear
+      H0040004:       Occupied housing units: Renter occupied
+      H0100001:       Population in occupied housing units: Total
+
+
+
+
+--------------------------------------------------------------------------------
+Citation and Use of Data
+--------------------------------------------------------------------------------
+ 
+All persons are granted a limited license to use this documentation and the
+accompanying data, subject to the following conditions:
+
+* Publications and research reports employing the data
+  must cite it appropriately. The citation should include the following:
+
+	  www.socialexplorer.com
+	  New York City, NY: Social Explorer 2014
+
+
+* Citations should also include the URL for this report:
+
+    http://www.socialexplorer.com/pub/reportdata/HtmlResults.aspx?reportid=R10728360
+
+If you have any questions contact info@socialexplorer.com

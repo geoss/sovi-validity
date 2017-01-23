@@ -1,0 +1,29 @@
+,Attribute,Desc,SoVI_contrib,Type
+0,MEDAGE_ACS,Median Age,pos,person
+1,BLACK_ACS,Pop African-American (%),pos,person
+2,QNATAM_ACS,Pop Native American (%),pos,person
+3,QASIAN_ACS,Pop Asian (%),pos,person
+4,QHISP_ACS,Pop Hispanic (%),pos,person
+5,QAGEDEP_ACS,Age Dependency (%),pos,person
+6,QPUNIT_ACS,Persons Per Housing Unit,pos,person
+7,PRENTER_ACS,Rental Housing (%),pos,hu
+8,QNRRES_ACS,Nursing Home Residents (%),pos,person
+9,QFEMALE_ACS,Pop Female (%),pos,person
+10,QFHH_ACS,Female-Headed Households (%),pos,hu
+11,QUNOCCHU_ACS,Vacant Housing (%),pos,hu
+12,PERCAP_ALT,Per-Capita Income,neg,person
+13,QESL_ALT,English as Second Language (%),pos,person
+14,QCVLUN,Unemployment (%),pos,person
+15,QPOVTY,Poverty (%),pos,person
+16,QMOHO,Mobile Homes (%),pos,hu
+17,QED12LES_ALT,Adults Completed <Grade 12 (%),pos,person
+18,QFEMLBR,Female Employment (%),pos,person
+19,QEXTRCT_ALT,Extractive Sector Employment (%),pos,person
+20,QSERV_ALT,Service Sector Employment (%),pos,person
+21,QSSBEN,Social Security Income (%),pos,hu
+22,QNOAUTO_ALT,No Automobile (%),pos,hu
+23,QFAM,Children in Married Families (%),neg,person
+24,QRICH200K,Annual Income >$200K (%),neg,hu
+25,MDGRENT_ALT,Median Rent,neg,hu
+26,MHSEVAL_ALT,Median Home Value,neg,hu
+27,POPDENS,Population Density,pos,person

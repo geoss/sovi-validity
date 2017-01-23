@@ -1,0 +1,92 @@
+```{r echo=FALSE,warning=FALSE,message=FALSE}
+source(paste0(getwd(),"/sovi_maps.R"))
+```
+
+Baseline SoVI Map
+===
+
+```{r SoVI_all,echo=FALSE, fig.height=10,fig.width=15,warning=FALSE,message=FALSE,dev='png'}
+
+reg<-prep4DropOne(path,reg.type,reg.name)
+
+#Plot SoVI scores - assign to reg.name for output
+mapSoVI(reg,outName)
+
+```
+
+Drop One Results
+===
+
+Drop-One Maps
+---
+
+```{r SoVI_drop,echo=FALSE, fig.height=10,fig.width=15,warning=FALSE,message=FALSE,dev='png',eval=FALSE}
+
+#Plot drop-one maps
+mapDropOne(path,reg.type,inData=reg,outName)
+
+```
+
+Maps of Change between baseline SoVI and simulation SoVI
+---
+
+These maps compare baseline SoVI to SoVI calculated when a given variable is dropped.
+
+*(To condense breaks to tertiles, set "condense.breaks" in the source code to TRUE)*
+
+```{r SoVI_chg_drop,echo=FALSE, fig.height=10,fig.width=15,warning=FALSE,message=FALSE,dev='png'}
+
+for (var in SoVI_vars){
+
+  mapCompareVar(path,reg.name,reg.type,sovi_var=var,by.type="drop",map.quantile=TRUE,condense.breaks=FALSE,return.map_df=TRUE)
+
+}  
+```
+
+Margin-of-Error Simulation Results
+===
+
+Histogram
+---
+
+```{r SoVI_sim_histogram,echo=FALSE, fig.height=15,fig.width=20,warning=FALSE,message=FALSE,dev='png'}
+
+#Reload region for sim results 
+#Keep cont_US false for plotting histograms 
+reg<-getRegionByQuery(path,reg.name,reg.type)
+
+#Prep reg for simulation results 
+reg<-simStats(inData=reg,path,reg.type,reg.name)
+
+#Plot histograms
+plotSimHistogram(path,inData=reg,outName,opr="rowMeans")
+
+```
+
+
+Maximum - Minimum Change in Rank Maps
+---
+
+```{r SoVI_sim_MaxMin,echo=FALSE, fig.height=10,fig.width=15,warning=FALSE,message=FALSE,dev='png'}
+
+#Max-min range rank change maps 
+mapMaxMin(path,reg,outName)
+
+```
+
+
+Maps of Change between baseline SoVI and simulation SoVI
+---
+
+These maps compare baseline SoVI to SoVI calculated for the MOE simulation of a given variable with the most observed movement in rank from baseline SoVI.
+
+*(To condense breaks to tertiles, set "condense.breaks" in the source code to TRUE)*
+
+```{r SoVI_chg_sim,echo=FALSE, fig.height=10,fig.width=15,warning=FALSE,message=FALSE,dev='png',eval=FALSE}
+
+for (var in SoVI_vars){
+
+  mapCompareVar(path,reg.name,reg.type,sovi_var=var,by.type="sim",map.quantile=TRUE,condense.breaks=FALSE,return.map_df=TRUE)
+
+}  
+```
