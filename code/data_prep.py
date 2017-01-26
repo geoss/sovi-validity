@@ -20,10 +20,10 @@ pd.set_option("chained_assignment", None)
 # ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
 # spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
 
-parent = os.path.dirname(os.getcwd())
-outPath=os.path.join(parent,'data')
-ipath = os.path.join(parent,'data','input')
-spath = os.path.join(parent,'data','spatial')
+path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
+outPath=os.path.join(path,'data')
+ipath = os.path.join(path,'data','input')
+spath = os.path.join(path,'data','spatial')
 
 # functions fot the calculation of SE
 
@@ -62,17 +62,17 @@ def se_prop(est, estd, sen, sed):
     return num / estd
 
 
-# # unit test for equivalency between original and constructed variables
-#
-#
-# def equal_test(orig, alt):
-#     if np.equal(orig, alt).sum() != db.shape[0]:
-#         if (db.shape[0] - np.equal(orig, alt).sum()) \
-#                 == np.isnan(orig).sum() == np.isnan(alt).sum():
-#             pass
-#         else:
-#             print 'problem in equal test'
-#             raise
+# unit test for equivalency between original and constructed variables
+
+
+def equal_test(orig, alt):
+    if np.equal(orig, alt).sum() != db.shape[0]:
+        if (db.shape[0] - np.equal(orig, alt).sum()) \
+                == np.isnan(orig).sum() == np.isnan(alt).sum():
+            pass
+        else:
+            print("problem in equal test")
+            raise
 
 
 # define data types
@@ -80,12 +80,13 @@ make_strings = {'Geo_FIPS': object, 'Geo_STATE': object, 'Geo_COUNTY': object,
                 'Geo_TRACT': object, 'Geo_CBSA': object, 'Geo_CSA': object}
 
 # load data
+# JOE: I had to change the encoding to latin-1 to avoid hitting a UTF-8 error
 acs = pd.read_csv(os.path.join(ipath, 'sovi_acs.csv'),
-                  dtype=make_strings, skiprows=1)
+                  dtype=make_strings, skiprows=1,encoding='latin-1')
 census = pd.read_csv(os.path.join(ipath, 'sovi_decennial.csv'),
-                     dtype=make_strings, skiprows=1)
+                     dtype=make_strings, skiprows=1,encoding='latin-1')
 acs_samp = pd.read_csv(os.path.join(ipath, 'sovi_acs_sampSize.csv'),
-                       dtype=make_strings, skiprows=1)
+                       dtype=make_strings, skiprows=1,encoding='latin-1')
 
 # format FIPS
 acs.index = 'g' + acs.Geo_FIPS
@@ -97,29 +98,28 @@ db = census
 db = db.join(acs, rsuffix='_acs')
 db = db.join(acs_samp, rsuffix='_acsSamp')
 
-# # if available add supplmentary data
-# # JOE: does not appear to be used elsewhere in this script
-# try:
-#     census_sup1 = pd.read_csv(os.path.join(ipath, 'sovi_decennial_sup1.csv'),
-#                               dtype=make_strings, skiprows=1)
-#     census_sup1.index = 'g' + census_sup1.Geo_FIPS
-#     db = db.join(census_sup1, rsuffix='_decSup1')
-# except:
-#     print 'no supplementary decennial data'
-# try:
-#     acs_sup1 = pd.read_csv(os.path.join(spath, 'sovi_acs_sup1.csv'),
-#                            dtype=make_strings, skiprows=1)
-#     acs_sup1.index = 'g' + acs_sup1.Geo_FIPS
-#     db = db.join(acs_sup1, rsuffix='_acsSup1')
-# except:
-#     print 'did not pull supplementary ACS data - A'
-# try:
-#     acs_sup2 = pd.read_csv(os.path.join(ipath, 'sovi_acs_kids.csv'),
-#                            dtype=make_strings, skiprows=1)
-#     acs_sup2.index = 'g' + acs_sup2.Geo_FIPS
-#     db = db.join(acs_sup2, rsuffix='_acsSup2')
-# except:
-#     print 'did not pull supplementary ACS data - B'
+# if available add supplmentary data
+try:
+    census_sup1 = pd.read_csv(os.path.join(ipath, 'sovi_decennial_sup1.csv'),
+        dtype=make_strings,skiprows=1,encoding='latin-1')
+    census_sup1.index = 'g' + census_sup1.Geo_FIPS
+    db = db.join(census_sup1, rsuffix='_decSup1')
+except:
+    print("no supplementary decennial data")
+try:
+    acs_sup1 = pd.read_csv(os.path.join(spath, 'sovi_acs_sup1.csv'),
+        dtype=make_strings,skiprows=1,encoding='latin-1')
+    acs_sup1.index = 'g' + acs_sup1.Geo_FIPS
+    db = db.join(acs_sup1, rsuffix='_acsSup1')
+except:
+    print("did not pull supplementary ACS data - A")
+try:
+    acs_sup2 = pd.read_csv(os.path.join(ipath, 'sovi_acs_kids.csv'),
+                           dtype=make_strings, skiprows=1,encoding='latin-1')
+    acs_sup2.index = 'g' + acs_sup2.Geo_FIPS
+    db = db.join(acs_sup2, rsuffix='_acsSup2')
+except:
+    print("did not pull supplementary ACS data - B")
 
 # drop Puerto Rico (sorry PR!)
 db = db[db.Geo_STATE != '72']
@@ -421,4 +421,4 @@ db1['sample_hu'] = db.ACS12_5yr_B00002001
 
 # Save data if main
 if __name__ == "__main__":
-    db1.to_csv(os.path.join(parent, 'sovi_inputs.csv'))
+    db1.to_csv(os.path.join(path, 'sovi_inputs.csv'))

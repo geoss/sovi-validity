@@ -9,21 +9,21 @@ class SPSS_PCA:
 	'''
 	A class that integrates most (all?) of the assumptions SPSS imbeds in their
     implimnetation of principle components analysis (PCA), which can be found in
-    thier GUI under Analyze > Dimension Reduction > Factor. This class is not 
+    thier GUI under Analyze > Dimension Reduction > Factor. This class is not
 	intended to be a full blown recreation of the SPSS Factor Analysis GUI, but
 	it does replicate (possibly) the most common use cases. Note that this class
-	will not produce exactly the same results as SPSS, probably due to differences 
-	in how eigenvectors/eigenvalues and/or singular values are computed. However, 
+	will not produce exactly the same results as SPSS, probably due to differences
+	in how eigenvectors/eigenvalues and/or singular values are computed. However,
 	this class does seem to get all the signs to match, which is not really necessary
 	but kinda nice. Most of the approach came from the official SPSS documentation.
-	
+
 	References
 	----------
 	ftp://public.dhe.ibm.com/software/analytics/spss/documentation/statistics/20.0/en/client/Manuals/IBM_SPSS_Statistics_Algorithms.pdf
 	http://spssx-discussion.1045642.n5.nabble.com/Interpretation-of-PCA-td1074350.html
 	http://mdp-toolkit.sourceforge.net/api/mdp.nodes.WhiteningNode-class.html
 	https://github.com/mdp-toolkit/mdp-toolkit/blob/master/mdp/nodes/pca_nodes.py
-	
+
 	Parameters
 	----------
 	inputs:  numpy array
@@ -37,7 +37,7 @@ class SPSS_PCA:
 	varimax: boolean (default=False)
 			 If True, then apply a varimax rotation to the results. If False, then
 			 return the unrotated results only.
-			 
+
 	Attributes
 	----------
 	z_inputs:	numpy array
@@ -49,48 +49,48 @@ class SPSS_PCA:
 	eigenvals_all:	numpy array
 				Eigenvalues associated with each factor.
 	eigenvals:	numpy array
-				Subset of eigenvalues_all reflecting only those that meet the 
+				Subset of eigenvalues_all reflecting only those that meet the
 				criterion defined by parameters reduce and min_eig.
 	weights:    numpy array
 				Values applied to the input data (after z-scores) to get the PCA
-				scores. "Component score coefficient matrix" in SPSS or  
+				scores. "Component score coefficient matrix" in SPSS or
 				"projection matrix" in the MDP library.
-	comms: 		numpy array			
+	comms: 		numpy array
 				Communalities
 	sum_sq_load: numpy array
 				 Sum of squared loadings.
 	comp_mat_rot: numpy array or None
-				  Component matrix after rotation. Ordered from highest to lowest 
+				  Component matrix after rotation. Ordered from highest to lowest
 				  variance explained based on sum_sq_load_rot. None if varimax=False.
 	scores_rot:	numpy array or None
-				Uncorrelated vectors associated with each observation, after 
+				Uncorrelated vectors associated with each observation, after
 				rotation. None if varimax=False.
 	weights_rot: numpy array or None
-				Rotated values applied to the input data (after z-scores) to get 
+				Rotated values applied to the input data (after z-scores) to get
 				the PCA	scores. None if varimax=False.
 	sum_sq_load_rot: numpy array or None
-				 Sum of squared loadings for rotated results. None if 
+				 Sum of squared loadings for rotated results. None if
 				 varimax=False.
-	
+
 	'''
-	
+
 	def __init__(self, inputs, reduce=False, min_eig=1.0, varimax=False):
 		z_inputs = ZSCORE(inputs)  # seems necessary for SPSS "correlation matrix" setting (their default)
-			
+
 		# run base SPSS-style PCA to get all eigenvalues
 		pca_node = MDP.nodes.WhiteningNode()  # settings for the PCA
-		scores = pca_node.execute(z_inputs)  # base run PCA 
+		scores = pca_node.execute(z_inputs)  # base run PCA
 		eigenvalues_all = pca_node.d   # rename PCA results
-		
+
 		# run SPSS-style PCA based on user settings
 		pca_node = MDP.nodes.WhiteningNode(reduce=reduce, var_abs=min_eig)  # settings for the PCA
 		scores = pca_node.execute(z_inputs)  # run PCA  (these have mean=0, std_dev=1)
 		weights = pca_node.v  # rename PCA results (these might be a transformation of the eigenvectors)
 		eigenvalues = pca_node.d   # rename PCA results
-		component_matrix = weights * eigenvalues  # compute the loadings 
+		component_matrix = weights * eigenvalues  # compute the loadings
 		component_matrix = self._reflect(component_matrix)   # get signs to match SPSS
 		communalities = (component_matrix**2).sum(1)   # compute the communalities
-		sum_sq_loadings = (component_matrix**2).sum(0) # note that this is the same as eigenvalues 
+		sum_sq_loadings = (component_matrix**2).sum(0) # note that this is the same as eigenvalues
 		weights_reflected = component_matrix/eigenvalues  # get signs to match SPSS
 		scores_reflected = np.dot(z_inputs, weights_reflected)  # note that abs(scores)=abs(scores_reflected)
 
@@ -116,7 +116,7 @@ class SPSS_PCA:
 
 			# varimax scores
 			cm_varimax_reflected = self._reflect(cm_varimax)  # get signs to match SPSS
-			varimax_weights = np.dot(cm_varimax_reflected, 
+			varimax_weights = np.dot(cm_varimax_reflected,
 							  np.linalg.inv(np.dot(cm_varimax_reflected.T,
 							  cm_varimax_reflected))) # CM(CM'CM)^-1
 			scores_varimax = np.dot(z_inputs, varimax_weights)
@@ -138,7 +138,7 @@ class SPSS_PCA:
 		self.scores_rot = scores_varimax
 		self.weights_rot = varimax_weights
 		self.sum_sq_load_rot = sum_sq_loadings_varimax
-		
+
 	def _reflect(self, cm):
 		# reflect factors with negative sums; SPSS default
 		cm = copy.deepcopy(cm)
@@ -154,10 +154,10 @@ class SPSS_PCA:
 		p,k = Phi.shape
 		R = np.eye(k)
 		d=0
-		for i in xrange(q):
+		for i in range(q):
 			d_old = d
 			Lambda = np.dot(Phi, R)
-			u,s,vh = np.linalg.svd(np.dot(Phi.T,np.asarray(Lambda)**3 - (gamma/p) * 
+			u,s,vh = np.linalg.svd(np.dot(Phi.T,np.asarray(Lambda)**3 - (gamma/p) *
 							np.dot(Lambda, np.diag(np.diag(np.dot(Lambda.T,Lambda))))))
 			R = np.dot(u,vh)
 			d = np.sum(s)
