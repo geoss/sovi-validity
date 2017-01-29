@@ -11,19 +11,25 @@
 import os
 import sys
 import pandas as pd
-sys.path.append("/Users/sspielman/Dropbox/SoVI_var_wise_paper/code")
+# sys.path.append("/Users/sspielman/Dropbox/SoVI_var_wise_paper/code")
 from spss_pca import SPSS_PCA
 import data_prep
 
 pd.set_option("chained_assignment", None)
 
 # Set paths to data
-local_path = '/Users/sspielman/'
-os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
-path = local_path + '/Dropbox/SoVI_var_wise_paper'
-outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
-ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
-spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
+# local_path = '/Users/sspielman/'
+# os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
+# path = local_path + '/Dropbox/SoVI_var_wise_paper'
+# outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
+# ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
+# spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
+
+path = os.getcwd()
+# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
+outPath=os.path.join(path,'data')
+ipath = os.path.join(path,'data','input')
+spath = os.path.join(path,'data','spatial')
 
 # copy db1 to new varname for clarity
 US_All = data_prep.db1.copy()
@@ -81,7 +87,7 @@ for name, sign, sample, hrname in input_names:
     elif sign == 'pos':
         pass
     else:
-        print "problem in flipping signs"
+        print("problem in flipping signs")
         raise
 
 # Build FEMA subRegions Dict values= state ID's
@@ -150,7 +156,7 @@ varContrib['USA'] = zip(attr_names, attrib_contribution_us.tolist())
 try:
     US_Sovi_Score['rank'].max() == len(US_All)
 except:
-    print "error in ranking check"
+    print("error in ranking check")
     raise
 
 # cleanup
@@ -222,7 +228,8 @@ del attrib_contribution
 # Make Var Contributions Data Frame
 ###################################################
 variable_contributions = pd.DataFrame(index=attr_names)
-for area in varContrib.iterkeys():
+# for area in varContrib.iterkeys():
+for area in varContrib.keys():
     variable_contributions[area] = [x for i, x in varContrib[area]]
 
 #################################################################################
@@ -245,8 +252,14 @@ for st in stateList:
 #####################################################
 # OUTPUT TABLES
 #####################################################
-US_Sovi_Score.to_csv('../data/output/US_Sovi_Score.csv')
-FEMA_Region_Sovi_Score.to_csv('../data/output/FEMA_Region_Sovi_Score.csv')
-State_Sovi_Score.to_csv('../data/output/State_Sovi_Score.csv')
-county_in_state_rank.to_csv('../data/output/County_in_State_Rank.csv')
-variable_contributions.to_csv('../data/output/variable_contributions.csv')
+# US_Sovi_Score.to_csv(os.path.join(outPath,'output','US_Sovi_Score.csv')
+# FEMA_Region_Sovi_Score.to_csv(os.path.join(outPath,'output','FEMA_Region_Sovi_Score.csv')
+# State_Sovi_Score.to_csv(os.path.join(outPath,'output','State_Sovi_Score.csv')
+# county_in_state_rank.to_csv(os.path.join(outPath,'output','County_in_State_Rank.csv')
+# variable_contributions.to_csv(os.path.join(outPath,'output','variable_contributions.csv')
+
+US_Sovi_Score.to_csv(os.path.join(outPath,'output','US_Sovi_Score.csv'))
+FEMA_Region_Sovi_Score.to_csv(os.path.join(outPath,'output','FEMA_Region_Sovi_Score.csv'))
+State_Sovi_Score.to_csv(os.path.join(outPath,'output','State_Sovi_Score.csv'))
+county_in_state_rank.to_csv(os.path.join(outPath,'output','County_in_State_Rank.csv'))
+variable_contributions.to_csv(os.path.join(outPath,'output','variable_contributions.csv'))

@@ -41,8 +41,11 @@ def se_prop(est, estd, sen, sed):
 # county results proofed
 ###############################
 
-path = "/Users/Seth/Dropbox/SoVI_var_wise_paper/data/input"
-spath = "/Users/Seth/Dropbox/SoVI_var_wise_paper/data/spatial"
+parent = os.path.dirname(os.getcwd()) # parent directory
+# path = "/Users/Seth/Dropbox/SoVI_var_wise_paper/data/input"
+path = os.path.join(parent,'data/input')
+# spath = "/Users/Seth/Dropbox/SoVI_var_wise_paper/data/spatial"
+spath = os.path.join(parent,'data/spatial')
 
 make_strings = {'Geo_FIPS': object, 'Geo_STATE': object, 'Geo_COUNTY': object,
                 'Geo_TRACT': object, 'Geo_CBSA': object, 'Geo_CSA': object}
@@ -348,7 +351,7 @@ db1['POPDENS_SE'] = se_ratio(db1.POPDENS, db.SE_T02A_002,
 
 #############################
 
-# Tests to validate equivalency 
+# Tests to validate equivalency
 def equal_test(orig, alt):
     if np.equal(orig, alt).sum() != db.shape[0]:
         if (db.shape[0] - np.equal(orig, alt).sum()) == np.isnan(orig).sum() == np.isnan(alt).sum():

@@ -12,14 +12,19 @@ import numpy as np
 
 pd.set_option("chained_assignment", None)
 
-# Set paths to data
-local_path = '/Users/sspielman/'
-os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
-path = local_path + '/Dropbox/SoVI_var_wise_paper'
-outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
-ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
-spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
+# # Set paths to data
+# local_path = '/Users/sspielman/'
+# os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
+# path = local_path + '/Dropbox/SoVI_var_wise_paper'
+# outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
+# ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
+# spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
 
+path = os.getcwd()
+# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
+outPath=os.path.join(path,'data')
+ipath = os.path.join(path,'data','input')
+spath = os.path.join(path,'data','spatial')
 
 # functions fot the calculation of SE
 
@@ -67,7 +72,7 @@ def equal_test(orig, alt):
                 == np.isnan(orig).sum() == np.isnan(alt).sum():
             pass
         else:
-            print 'problem in equal test'
+            print("problem in equal test")
             raise
 
 
@@ -76,12 +81,13 @@ make_strings = {'Geo_FIPS': object, 'Geo_STATE': object, 'Geo_COUNTY': object,
                 'Geo_TRACT': object, 'Geo_CBSA': object, 'Geo_CSA': object}
 
 # load data
+# JOE: I had to change the encoding to latin-1 to avoid hitting a UTF-8 error
 acs = pd.read_csv(os.path.join(ipath, 'sovi_acs.csv'),
-                  dtype=make_strings, skiprows=1)
+                  dtype=make_strings, skiprows=1,encoding='latin-1')
 census = pd.read_csv(os.path.join(ipath, 'sovi_decennial.csv'),
-                     dtype=make_strings, skiprows=1)
+                     dtype=make_strings, skiprows=1,encoding='latin-1')
 acs_samp = pd.read_csv(os.path.join(ipath, 'sovi_acs_sampSize.csv'),
-                       dtype=make_strings, skiprows=1)
+                       dtype=make_strings, skiprows=1,encoding='latin-1')
 
 # format FIPS
 acs.index = 'g' + acs.Geo_FIPS
@@ -96,25 +102,25 @@ db = db.join(acs_samp, rsuffix='_acsSamp')
 # if available add supplmentary data
 try:
     census_sup1 = pd.read_csv(os.path.join(ipath, 'sovi_decennial_sup1.csv'),
-                              dtype=make_strings, skiprows=1)
+        dtype=make_strings,skiprows=1,encoding='latin-1')
     census_sup1.index = 'g' + census_sup1.Geo_FIPS
     db = db.join(census_sup1, rsuffix='_decSup1')
 except:
-    print 'no supplementary decennial data'
+    print("no supplementary decennial data")
 try:
     acs_sup1 = pd.read_csv(os.path.join(spath, 'sovi_acs_sup1.csv'),
-                           dtype=make_strings, skiprows=1)
+        dtype=make_strings,skiprows=1,encoding='latin-1')
     acs_sup1.index = 'g' + acs_sup1.Geo_FIPS
     db = db.join(acs_sup1, rsuffix='_acsSup1')
 except:
-    print 'did not pull supplementary ACS data - A'
+    print("did not pull supplementary ACS data - A")
 try:
     acs_sup2 = pd.read_csv(os.path.join(ipath, 'sovi_acs_kids.csv'),
-                           dtype=make_strings, skiprows=1)
+                           dtype=make_strings, skiprows=1,encoding='latin-1')
     acs_sup2.index = 'g' + acs_sup2.Geo_FIPS
     db = db.join(acs_sup2, rsuffix='_acsSup2')
 except:
-    print 'did not pull supplementary ACS data - B'
+    print("did not pull supplementary ACS data - B")
 
 # drop Puerto Rico (sorry PR!)
 db = db[db.Geo_STATE != '72']
