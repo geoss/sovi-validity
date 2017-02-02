@@ -11,7 +11,7 @@
 import os
 import sys
 import pandas as pd
-# sys.path.append("/Users/sspielman/Dropbox/SoVI_var_wise_paper/code")
+sys.path.insert(1, "./code")
 from spss_pca import SPSS_PCA
 import data_prep
 
@@ -239,12 +239,16 @@ for area in varContrib.keys():
 county_in_state_rank = pd.DataFrame(index=State_Sovi_Score.index,
                                     columns=['state_sovi_rank', 'fema_region_sovi_rank', 'us_sovi_rank'])
 for st in stateList:
+    if st=='g23g33g25':
+
     # get all counties in state and rank for us
     st_cty_scores = US_Sovi_Score.loc[[st in s for s in US_Sovi_Score.index], 'sovi']
-    county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+    county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = \
+        abs(st_cty_scores).rank(method='average', ascending=False)
     # get all counties in state and rank for fema region
     st_cty_scores = FEMA_Region_Sovi_Score.loc[[st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
-    county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+    county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = \
+        abs(st_cty_scores).rank(method='average', ascending=False)
     # county rank in state only sovi
     st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
     county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
