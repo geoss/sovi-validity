@@ -19,7 +19,7 @@ from scipy.stats import spearmanr
 # compare drop 1 to full sovi
 
 local_path = '/Users/becky/'
-path = local_path + 'documents/sovi-validity-master/data/output/'
+path = local_path + 'documents/sovi-validity/data/output/'
 
 state_id = ['g51', 'g48', 'g36', 'g06', 'g13', 'g16', 'g17', 'g29', 'g46', 'g23g33g25']
 rank = pd.read_csv(path + 'County_in_State_Rank.csv')
