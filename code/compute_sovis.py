@@ -5,7 +5,8 @@
 # FEMA_Region_Sovi_Score = a sovi analysis by fema region outputs county score and rank
 # State_Sovi_Score = a sovi analysis by state for 10 states outputs county score and rank
 # county_in_state_rank = a ranking of the counties of 10 states from the us, region level, and state level analysis
-# variable_contributions = net contributions of each variable in each analysis above
+# variable_contributions = net contributions of each variable in each
+# analysis above
 
 
 import os
@@ -27,9 +28,9 @@ pd.set_option("chained_assignment", None)
 
 path = os.getcwd()
 # path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
-outPath=os.path.join(path,'data')
-ipath = os.path.join(path,'data','input')
-spath = os.path.join(path,'data','spatial')
+outPath = os.path.join(path, 'data')
+ipath = os.path.join(path, 'data', 'input')
+spath = os.path.join(path, 'data', 'spatial')
 
 # copy db1 to new varname for clarity
 US_All = data_prep.db1.copy()
@@ -56,9 +57,11 @@ input_names = [['MEDAGE_ACS', 'pos', 'person', 'Median Age'],
                ['QCVLUN', 'pos', 'person', 'Unemployment (%)'],
                ['QPOVTY', 'pos', 'person', 'Poverty (%)'],
                ['QMOHO', 'pos', 'hu', 'Mobile Homes (%)'],
-               ['QED12LES_ALT', 'pos', 'person', 'Adults Completed <Grade 12 (%)'],
+               ['QED12LES_ALT', 'pos', 'person',
+                   'Adults Completed <Grade 12 (%)'],
                ['QFEMLBR', 'pos', 'person', 'Female Employment (%)'],
-               ['QEXTRCT_ALT', 'pos', 'person', 'Extractive Sector Employment (%)'],
+               ['QEXTRCT_ALT', 'pos', 'person',
+                   'Extractive Sector Employment (%)'],
                ['QSERV_ALT', 'pos', 'person', 'Service Sector Employment (%)'],
                ['QSSBEN', 'pos', 'hu', 'Social Security Income (%)'],
                ['QNOAUTO_ALT', 'pos', 'hu', 'No Automobile (%)'],
@@ -117,7 +120,8 @@ US_Sovi_Score = pd.DataFrame(index=US_All.Geo_FIPS,
 
 # In the FEMA_Region_Sovi_Score data frame ranks are BY FEMA REGION.
 # The data frame holds both the SOVI score and the county rank
-# This means that there should be 10 counties with rank 1 (one for each FEMA Region)
+# This means that there should be 10 counties with rank 1 (one for each
+# FEMA Region)
 FEMA_Region_Sovi_Score = pd.DataFrame(index=US_All.Geo_FIPS,
                                       columns=['sovi', 'rank', 'fema_region'])
 
@@ -126,11 +130,13 @@ FEMA_Region_Sovi_Score = pd.DataFrame(index=US_All.Geo_FIPS,
 US_All.loc[US_All.stateID.isin(['g23', 'g33', 'g25']), 'stateID'] = 'g23g33g25'
 
 # These are the states in the state level analysis
-stateList = ['g23g33g25', 'g36', 'g51', 'g13', 'g17', 'g48', 'g29', 'g46', 'g06', 'g16']
+stateList = ['g23g33g25', 'g36', 'g51', 'g13',
+             'g17', 'g48', 'g29', 'g46', 'g06', 'g16']
 
 # In the State_Sovi_Score data frame ranks are BY STATE.
 # The data frame holds both the SOVI score and the county rank
-# This means that there should be 10 counties with rank 1 (one for each state in stateList)
+# This means that there should be 10 counties with rank 1 (one for each
+# state in stateList)
 State_Sovi_Score = pd.DataFrame(
     index=US_All.index[US_All.stateID.isin(stateList)],
     columns=['sovi', 'rank', 'state_id'])
@@ -142,9 +148,11 @@ State_Sovi_Score = pd.DataFrame(
 inputData = US_All.drop(['Geo_FIPS', 'stateID'], axis=1, inplace=False)
 pca = SPSS_PCA(inputData, reduce=True, varimax=True)
 sovi_actual_us = pca.scores_rot.sum(1)
-sovi_actual_us = pd.DataFrame(sovi_actual_us, index=US_All.Geo_FIPS, columns=['sovi'])
+sovi_actual_us = pd.DataFrame(
+    sovi_actual_us, index=US_All.Geo_FIPS, columns=['sovi'])
 # rank
-sovi_actual_us['rank'] = abs(sovi_actual_us).rank(method='average', ascending=False)
+sovi_actual_us['rank'] = abs(sovi_actual_us).rank(
+    method='average', ascending=False)
 US_Sovi_Score.update(sovi_actual_us)
 
 attrib_contribution_us = pca.weights_rot.sum(1)
@@ -174,16 +182,19 @@ for i in FEMA_subs:
     FEMARegionData = US_All[US_All['stateID'].isin(FEMA_subs[i])]
 
     # compute SoVI
-    inputData = FEMARegionData.drop(['Geo_FIPS', 'stateID'], axis=1, inplace=False)
+    inputData = FEMARegionData.drop(
+        ['Geo_FIPS', 'stateID'], axis=1, inplace=False)
     pca = SPSS_PCA(inputData, reduce=True, varimax=True)
     sovi_actual_fema = pca.scores_rot.sum(1)
 
     # load into df for merge
-    sovi_actual_fema = pd.DataFrame(sovi_actual_fema, index=FEMARegionData.index, columns=['sovi'])
+    sovi_actual_fema = pd.DataFrame(
+        sovi_actual_fema, index=FEMARegionData.index, columns=['sovi'])
     # add fema region to df
     sovi_actual_fema['fema_region'] = i
     # rank
-    sovi_actual_fema['rank'] = abs(sovi_actual_fema['sovi']).rank(method='average', ascending=False)
+    sovi_actual_fema['rank'] = abs(sovi_actual_fema['sovi']).rank(
+        method='average', ascending=False)
 
     FEMA_Region_Sovi_Score.update(sovi_actual_fema)
 
@@ -210,10 +221,12 @@ for st in stateList:
     inputData = stateData.drop(['Geo_FIPS', 'stateID'], axis=1, inplace=False)
     pca = SPSS_PCA(inputData, reduce=True, varimax=True)
     sovi_actual = pca.scores_rot.sum(1)
-    sovi_actual = pd.DataFrame(sovi_actual, index=stateData.index, columns=['sovi'])
+    sovi_actual = pd.DataFrame(
+        sovi_actual, index=stateData.index, columns=['sovi'])
     sovi_actual['state_id'] = st
     # rank w/in state
-    sovi_actual['rank'] = abs(sovi_actual['sovi']).rank(method='average', ascending=False)
+    sovi_actual['rank'] = abs(sovi_actual['sovi']).rank(
+        method='average', ascending=False)
     State_Sovi_Score.update(sovi_actual)
     attrib_contribution = pca.weights_rot.sum(1)
     varContrib[st] = zip(attr_names, attrib_contribution.tolist())
@@ -232,25 +245,65 @@ variable_contributions = pd.DataFrame(index=attr_names)
 for area in varContrib.keys():
     variable_contributions[area] = [x for i, x in varContrib[area]]
 
-#################################################################################
+##########################################################################
 # For each county compute rank within state for US, state, and fema_region socis
-##################################################################################
+##########################################################################
 
 county_in_state_rank = pd.DataFrame(index=State_Sovi_Score.index,
                                     columns=['state_sovi_rank', 'fema_region_sovi_rank', 'us_sovi_rank'])
 
-for st in ['g23', 'g33', 'g25', 'g36', 'g51', 'g13', 'g17', 'g48', 'g29', 'g46', 'g06', 'g16']:
-    # get all counties in state and rank for us
-    st_cty_scores = US_Sovi_Score.loc[[st in s for s in US_Sovi_Score.index], 'sovi']
-    county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = \
-        abs(st_cty_scores).rank(method='average', ascending=False)
-    # get all counties in state and rank for fema region
-    st_cty_scores = FEMA_Region_Sovi_Score.loc[[st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
-    county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = \
-        abs(st_cty_scores).rank(method='average', ascending=False)
-    # county rank in state only sovi
-    st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
-    county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
+# for st in ['g23', 'g33', 'g25', 'g36', 'g51', 'g13', 'g17', 'g48', 'g29', 'g46', 'g06', 'g16']:
+#     # get all counties in state and rank for us
+#     st_cty_scores = US_Sovi_Score.loc[
+#         [st in s for s in US_Sovi_Score.index], 'sovi']
+#     county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = \
+#         abs(st_cty_scores).rank(method='average', ascending=False)
+#     # get all counties in state and rank for fema region
+#     st_cty_scores = FEMA_Region_Sovi_Score.loc[
+#         [st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
+#     county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = \
+#         abs(st_cty_scores).rank(method='average', ascending=False)
+#     # county rank in state only sovi
+#     st_cty_scores = State_Sovi_Score.loc[
+#         State_Sovi_Score['state_id'] == st, 'rank']
+#     county_in_state_rank.loc[st_cty_scores.index,
+#         'state_sovi_rank'] = st_cty_scores
+
+for st in stateList:
+    if st == 'g23g33g25':
+        # get all counties in the three NE states and rank for us
+        st_cty_scores = US_Sovi_Score.loc[
+            ['g23' in s for s in US_Sovi_Score.index], 'sovi']
+        st_cty_scores = st_cty_scores.append(
+            US_Sovi_Score.loc[['g33' in s for s in US_Sovi_Score.index], 'sovi'])
+        st_cty_scores = st_cty_scores.append(
+            US_Sovi_Score.loc[['g25' in s for s in US_Sovi_Score.index], 'sovi'])
+
+        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+
+        # get all counties in state and rank for fema region
+        st_cty_scores = FEMA_Region_Sovi_Score.loc[
+            ['g23' in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
+        st_cty_scores = st_cty_scores.append(FEMA_Region_Sovi_Score.loc[
+                             ['g33' in s for s in FEMA_Region_Sovi_Score.index], 'sovi'])
+        st_cty_scores = st_cty_scores.append(FEMA_Region_Sovi_Score.loc[
+                             ['g25' in s for s in FEMA_Region_Sovi_Score.index], 'sovi'])
+
+        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+
+        st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == 'g23g33g25', 'rank']
+        county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
+
+    else:
+        st_cty_scores = US_Sovi_Score.loc[[st in s for s in US_Sovi_Score.index], 'sovi']
+        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        # get all counties in state and rank for fema region
+        st_cty_scores = FEMA_Region_Sovi_Score.loc[[st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
+        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        # county rank in state only sovi
+        st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
+        county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
+
 
 #####################################################
 # OUTPUT TABLES
@@ -261,8 +314,12 @@ for st in ['g23', 'g33', 'g25', 'g36', 'g51', 'g13', 'g17', 'g48', 'g29', 'g46',
 # county_in_state_rank.to_csv(os.path.join(outPath,'output','County_in_State_Rank.csv')
 # variable_contributions.to_csv(os.path.join(outPath,'output','variable_contributions.csv')
 
-US_Sovi_Score.to_csv(os.path.join(outPath,'output','US_Sovi_Score.csv'))
-FEMA_Region_Sovi_Score.to_csv(os.path.join(outPath,'output','FEMA_Region_Sovi_Score.csv'))
-State_Sovi_Score.to_csv(os.path.join(outPath,'output','State_Sovi_Score.csv'))
-county_in_state_rank.to_csv(os.path.join(outPath,'output','County_in_State_Rank.csv'))
-variable_contributions.to_csv(os.path.join(outPath,'output','variable_contributions.csv'))
+US_Sovi_Score.to_csv(os.path.join(outPath, 'output', 'US_Sovi_Score.csv'))
+FEMA_Region_Sovi_Score.to_csv(os.path.join(
+    outPath, 'output', 'FEMA_Region_Sovi_Score.csv'))
+State_Sovi_Score.to_csv(os.path.join(
+    outPath, 'output', 'State_Sovi_Score.csv'))
+county_in_state_rank.to_csv(os.path.join(
+    outPath, 'output', 'County_in_State_Rank.csv'))
+variable_contributions.to_csv(os.path.join(
+    outPath, 'output', 'variable_contributions.csv'))
