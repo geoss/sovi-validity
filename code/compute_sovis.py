@@ -18,14 +18,6 @@ import data_prep
 
 pd.set_option("chained_assignment", None)
 
-# Set paths to data
-# local_path = '/Users/sspielman/'
-# os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
-# path = local_path + '/Dropbox/SoVI_var_wise_paper'
-# outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
-# ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
-# spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
-
 path = os.getcwd()
 # path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
 outPath = os.path.join(path, 'data')
