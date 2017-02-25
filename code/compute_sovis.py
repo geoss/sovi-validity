@@ -141,9 +141,9 @@ inputData = US_All.drop(['Geo_FIPS', 'stateID'], axis=1, inplace=False)
 pca = SPSS_PCA(inputData, reduce=True, varimax=True)
 sovi_actual_us = pca.scores_rot.sum(1)
 sovi_actual_us = pd.DataFrame(
-    sovi_actual_us, index=US_All.Geo_FIPS, columns=['sovi'])
+    sovi_actual_us, index=US_All.Geo_FIPS, columns=['sovi'],dtype='float64')
 # rank
-sovi_actual_us['rank'] = abs(sovi_actual_us).rank(
+sovi_actual_us['rank'] = sovi_actual_us.rank(
     method='average', ascending=False)
 US_Sovi_Score.update(sovi_actual_us)
 
@@ -185,7 +185,7 @@ for i in FEMA_subs:
     # add fema region to df
     sovi_actual_fema['fema_region'] = i
     # rank
-    sovi_actual_fema['rank'] = abs(sovi_actual_fema['sovi']).rank(
+    sovi_actual_fema['rank'] = sovi_actual_fema['sovi'].rank(
         method='average', ascending=False)
 
     FEMA_Region_Sovi_Score.update(sovi_actual_fema)
@@ -217,7 +217,7 @@ for st in stateList:
         sovi_actual, index=stateData.index, columns=['sovi'])
     sovi_actual['state_id'] = st
     # rank w/in state
-    sovi_actual['rank'] = abs(sovi_actual['sovi']).rank(
+    sovi_actual['rank'] = sovi_actual['sovi'].rank(
         method='average', ascending=False)
     State_Sovi_Score.update(sovi_actual)
     attrib_contribution = pca.weights_rot.sum(1)
