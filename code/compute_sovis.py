@@ -18,14 +18,6 @@ import data_prep
 
 pd.set_option("chained_assignment", None)
 
-# Set paths to data
-# local_path = '/Users/sspielman/'
-# os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
-# path = local_path + '/Dropbox/SoVI_var_wise_paper'
-# outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
-# ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
-# spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
-
 path = os.getcwd()
 # path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
 outPath = os.path.join(path, 'data')
@@ -246,28 +238,11 @@ for area in varContrib.keys():
     variable_contributions[area] = [x for i, x in varContrib[area]]
 
 ##########################################################################
-# For each county compute rank within state for US, state, and fema_region socis
+# For each county compute rank within state for US, state, and fema_region sovis
 ##########################################################################
 
 county_in_state_rank = pd.DataFrame(index=State_Sovi_Score.index,
                                     columns=['state_sovi_rank', 'fema_region_sovi_rank', 'us_sovi_rank'])
-
-# for st in ['g23', 'g33', 'g25', 'g36', 'g51', 'g13', 'g17', 'g48', 'g29', 'g46', 'g06', 'g16']:
-#     # get all counties in state and rank for us
-#     st_cty_scores = US_Sovi_Score.loc[
-#         [st in s for s in US_Sovi_Score.index], 'sovi']
-#     county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = \
-#         abs(st_cty_scores).rank(method='average', ascending=False)
-#     # get all counties in state and rank for fema region
-#     st_cty_scores = FEMA_Region_Sovi_Score.loc[
-#         [st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
-#     county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = \
-#         abs(st_cty_scores).rank(method='average', ascending=False)
-#     # county rank in state only sovi
-#     st_cty_scores = State_Sovi_Score.loc[
-#         State_Sovi_Score['state_id'] == st, 'rank']
-#     county_in_state_rank.loc[st_cty_scores.index,
-#         'state_sovi_rank'] = st_cty_scores
 
 for st in stateList:
     if st == 'g23g33g25':
@@ -304,15 +279,32 @@ for st in stateList:
         st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
         county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
 
+#####################################################
+# Drop 1 Variable
+#####################################################
+varContrib
+USvarRanks = rankContrib.USA.copy()  # have to make a copy to sort index
+USvarRanks.sort('USA')
+dropLevels = USvarRanks.index
+
+for j in dropLevels:
+    US_dropj = US_All.drop([j, 'Geo_FIPS', 'stateID'], axis=1, inplace=False)
+    pca = SPSS_PCA(US_dropj, reduce=True, varimax=True)
+    sovi_actual = pca.scores_rot.sum(1)
+    sovi_actual = pd.DataFrame(sovi_actual, index=geoLevels, columns=['sovi'])
+    US_SoVI_Drop1_Score.loc[j, 'sovi'] = sovi_actual.values
+    attrib_contribution = pd.DataFrame(data=pca.weights_rot.sum(1), index=US_dropj.columns)
+    # print(j +" " + str(np.isnan(attrib_contribution.values).sum()))
+    attrib_contribution = attrib_contribution.transpose()
+    attrib_contribution.index = [j]
+    # print(attrib_contribution.loc[j,:])
+    US_Drop1_NetContrib.loc[j, attrib_contribution.columns] = attrib_contribution.loc[j, :]  # .values
+
+
 
 #####################################################
 # OUTPUT TABLES
 #####################################################
-# US_Sovi_Score.to_csv(os.path.join(outPath,'output','US_Sovi_Score.csv')
-# FEMA_Region_Sovi_Score.to_csv(os.path.join(outPath,'output','FEMA_Region_Sovi_Score.csv')
-# State_Sovi_Score.to_csv(os.path.join(outPath,'output','State_Sovi_Score.csv')
-# county_in_state_rank.to_csv(os.path.join(outPath,'output','County_in_State_Rank.csv')
-# variable_contributions.to_csv(os.path.join(outPath,'output','variable_contributions.csv')
 
 US_Sovi_Score.to_csv(os.path.join(outPath, 'output', 'US_Sovi_Score.csv'))
 FEMA_Region_Sovi_Score.to_csv(os.path.join(
