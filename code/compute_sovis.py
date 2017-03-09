@@ -279,7 +279,7 @@ for st in stateList:
         st_cty_scores = st_cty_scores.append(
             US_Sovi_Score.loc[['g25' in s for s in US_Sovi_Score.index], 'sovi'])
 
-        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = st_cty_scores.rank(method='average', ascending=False)
 
         # get all counties in state and rank for fema region
         st_cty_scores = FEMA_Region_Sovi_Score.loc[
@@ -289,17 +289,17 @@ for st in stateList:
         st_cty_scores = st_cty_scores.append(FEMA_Region_Sovi_Score.loc[
                              ['g25' in s for s in FEMA_Region_Sovi_Score.index], 'sovi'])
 
-        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = st_cty_scores.rank(method='average', ascending=False)
 
         st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == 'g23g33g25', 'rank']
         county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
 
     else:
         st_cty_scores = US_Sovi_Score.loc[[st in s for s in US_Sovi_Score.index], 'sovi']
-        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        county_in_state_rank.loc[st_cty_scores.index, 'us_sovi_rank'] = st_cty_scores.rank(method='average', ascending=False)
         # get all counties in state and rank for fema region
         st_cty_scores = FEMA_Region_Sovi_Score.loc[[st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
-        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = abs(st_cty_scores).rank(method='average', ascending=False)
+        county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = st_cty_scores.rank(method='average', ascending=False)
         # county rank in state only sovi
         st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
         county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
