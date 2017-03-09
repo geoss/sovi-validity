@@ -18,7 +18,11 @@ opath = os.path.join(path, 'data', 'output')
 
 state_id = ['g51', 'g48', 'g36', 'g06', 'g13', 'g16', 'g17', 'g29', 'g46', 'g23g33g25']
 rank = compute_sovis.county_in_state_rank
+rank['Geo_FIPS'] = rank.index
+rank.index = range(len(rank))
 state = compute_sovis.State_Sovi_Score
+state['Geo_FIPS'] = state.index
+state.index = range(len(state))
 
 # create column names for dataframe based on state ids
 # columns for r values
@@ -40,7 +44,7 @@ for ID in state_id:
     state_results[ID+'_r']['US'] = st_US[0]
     state_results[ID+'_p']['US'] = st_US[1]
 
-state_results.to_csv(path + 'spearman_state.csv')
+state_results.to_csv(opath + '/spearman_state.csv')
 
 US_Sovi_Score = compute_sovis.US_Sovi_Score
 FEMA_Region_Sovi_Score = compute_sovis.FEMA_Region_Sovi_Score
@@ -59,7 +63,7 @@ for region in regionList:
     county_in_region_rank.loc[rg_cty_scores.index, 'fema_region_sovi_rank'] = abs(x.sovi).rank(method='average',
                                                                                                ascending=False)
 
-county_in_region_rank.to_csv(path + 'County_in_Region_Rank.csv')
+county_in_region_rank.to_csv(opath + '/County_in_Region_Rank.csv')
 corrReg = [s + '_r' for s in regionList]
 # columns for p values
 pvalReg = [x + '_p' for x in regionList]
@@ -75,5 +79,5 @@ for ID in regionList:
     reg_us = spearmanr(select['fema_region_sovi_rank'], select['us_sovi_rank'])
     region_results[ID+'_r'] = reg_us[0]
     region_results[ID+'_p'] = reg_us[1]
-region_results.to_csv(path + 'spearman_region.csv')
+region_results.to_csv(opath + '/spearman_region.csv')
     
