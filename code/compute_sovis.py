@@ -12,6 +12,7 @@
 import os
 import sys
 import pandas as pd
+import numpy as np
 sys.path.insert(1, "./code")
 from spss_pca import SPSS_PCA
 import data_prep
@@ -151,7 +152,6 @@ attrib_contribution_us = pca.weights_rot.sum(1)
 # Generate dictionary for all net loadings by variable for US
 varContrib['USA'] = zip(attr_names, attrib_contribution_us.tolist())
 
-
 # quick check of ranks max should equal number of counties in US
 try:
     US_Sovi_Score['rank'].max() == len(US_All)
@@ -282,10 +282,27 @@ for st in stateList:
 #####################################################
 # Drop 1 Variable
 #####################################################
-varContrib
-USvarRanks = rankContrib.USA.copy()  # have to make a copy to sort index
+# varContrib
+# USvarRanks = rankContrib.USA.copy()  # have to make a copy to sort index
+USvarRanks = variable_contributions.USA.copy()  # have to make a copy to sort index
 USvarRanks.sort('USA')
 dropLevels = USvarRanks.index
+
+#build multindex
+geoLevels = US_All.Geo_FIPS
+geoLabels = []
+for _ in range(len(dropLevels)):
+    geoLabels.extend(range(len(geoLevels)))
+dropLabels = np.repeat(range(len(dropLevels)), len(geoLevels))
+
+US_Drop1_Multi_Index = pd.MultiIndex(levels=[dropLevels, geoLevels],
+                                    labels=[dropLabels, geoLabels],
+                                    names=['DroppedVar', 'Geo_FIPS'])
+
+US_Drop1_NetContrib = pd.DataFrame(index=dropLevels, columns=dropLevels)
+
+US_SoVI_Drop1_Score = pd.DataFrame(index=US_Drop1_Multi_Index, columns=['sovi'])
+
 
 for j in dropLevels:
     US_dropj = US_All.drop([j, 'Geo_FIPS', 'stateID'], axis=1, inplace=False)
@@ -294,13 +311,27 @@ for j in dropLevels:
     sovi_actual = pd.DataFrame(sovi_actual, index=geoLevels, columns=['sovi'])
     US_SoVI_Drop1_Score.loc[j, 'sovi'] = sovi_actual.values
     attrib_contribution = pd.DataFrame(data=pca.weights_rot.sum(1), index=US_dropj.columns)
+    # print(attrib_contribution)
+    # print(attrib_contribution.transpose())
     # print(j +" " + str(np.isnan(attrib_contribution.values).sum()))
-    attrib_contribution = attrib_contribution.transpose()
+    attrib_contribution = attrib_contribution.transpose() # THIS BREAKS THE RESULTS???
     attrib_contribution.index = [j]
+    # print(attrib_contribution)
     # print(attrib_contribution.loc[j,:])
-    US_Drop1_NetContrib.loc[j, attrib_contribution.columns] = attrib_contribution.loc[j, :]  # .values
+    # US_Drop1_NetContrib.loc[j, attrib_contribution.columns] = attrib_contribution.loc[j, :]  # .values
+    US_Drop1_NetContrib.loc[attrib_contribution.columns,j] = attrib_contribution.loc[j, :]  # .values
 
 
+# sort by rank order
+US_rank_order=abs(variable_contributions.USA).rank(method='average',ascending=False).sort_values().index # original rank order
+US_Drop1_NetContrib=US_Drop1_NetContrib.ix[US_rank_order] # sort rows
+US_Drop1_NetContrib=US_Drop1_NetContrib.ix[:,US_rank_order] # sort columns
+
+# ranked version of the drop 1 variable table
+US_Drop1_NetContrib_ranks=US_Drop1_NetContrib.copy()
+US_Drop1_NetContrib_ranks=US_Drop1_NetContrib_ranks.apply(lambda x: abs(x).rank(method='average',ascending=False)) # convert absolute scores to ranks
+US_Drop1_NetContrib_ranks=US_Drop1_NetContrib_ranks.ix[US_rank_order] # sort rows
+US_Drop1_NetContrib_ranks=US_Drop1_NetContrib_ranks.ix[:,US_rank_order] # sort columns
 
 #####################################################
 # OUTPUT TABLES
@@ -315,3 +346,7 @@ county_in_state_rank.to_csv(os.path.join(
     outPath, 'output', 'County_in_State_Rank.csv'))
 variable_contributions.to_csv(os.path.join(
     outPath, 'output', 'variable_contributions.csv'))
+US_Drop1_NetContrib.to_csv(os.path.join(
+    outPath, 'output', 'US_Drop1_NetContrib_raw.csv'))
+US_Drop1_NetContrib_ranks.to_csv(os.path.join(
+    outPath, 'output', 'US_Drop1_NetContrib_ranks.csv'))
