@@ -14,8 +14,8 @@ This code shows in this analysis that the Sovi Index fails this "cup test" that 
 ## Variables and Components
 The Sovi Index is constructed using a tecnhnique called Principal Components Analysis, this is matrix decomposition method that uses the covariance matrix of the input data. Usually, in the social sciences one treats the "compents" what come of out a PCA as latent variables. For example, in Sovi it comon to fine components that measure things like "race and class". In this analysis we also show that this latent variable approach has maked some underlying problems with the Soci index, namely that variables contribute to the index in ways that are profoundly counter intuitive.
 
-##There is a paper
+## There is a paper
 For an in-depth discussion of these ideas please see the companion paper to this anlysis URL or contact the suthors.
 
-##Data Prep
+## Data Prep
 All of the code necessary to transform raw data from the ACS inthe 28 variables used to construct SoVI is included.  There is a lot of data wrangling in this code, combining variables into new variables, computing standard errors, etc. Its all farily straightforward and we will not walk through the details here.  The code should be self-explanatory.
