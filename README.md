@@ -1,5 +1,5 @@
 # sovi-validity
-Analysis of logical consistence of social vulnerability indices
+Analysis of logical consistency of social vulnerability indices
 
 This is a script to calculate the Social Vulnerability (Sovi) Index. The Sovi index measures a place's social vulnerability to natural hazards and has been used in hundreds of publications, in both the academic and policy domains.  Social vulnerability is the idea that different populations experience the same hazard event in different ways.  For example, Katrina showed that some socio-economic groups were more vulnerable than others.
 
