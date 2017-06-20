@@ -12,7 +12,7 @@
 import os
 import sys
 import pandas as pd
-import geopandas as gpd
+# import geopandas as gpd
 import numpy as np
 from scipy.stats import spearmanr
 sys.path.insert(1, "./code")
@@ -349,9 +349,9 @@ for st in stateList:
 # DROP ONE PLACE
 ################
 
-# df containing county names - no need for the geometries
-# county_names=pd.DataFrame(gpd.read_file(os.path.join(spath,'USA_Counties_500k.shp')).ix[:,['geoFIPS','NAME']],dtype='str')
-county_names=pd.read_csv('../data/input/county_names.csv',index_col=0,encoding='latin-1')
+# df containing county names - no need for the geometr#
+# county_names=pd.DataFrame(gpd.read_file(os.path.join(s#path,'USA_Counties_500k.shp('../data/
+county_names=pd.read_csv(os.path.join(ipath,'county_names.csv'),index_col=0,encoding='latin-1')
 
 # ##### State (California)
 print('\nDrop One Place: State\n')
@@ -391,7 +391,7 @@ uscd=us_cors[us_cors==min(us_cors)].index.values[0]
 us_rchg=rankChgTable(inputs=US_All,scores=US_Sovi_Score,obs_names=county_names,drop=uscd,cor=True,top=10)
 
 # rank quantile moves
-us_rchg=rankQuantileMoves(inputs=US_All,scores=US_Sovi_Score,drop=uscd)
+us_quint_moves=rankQuantileMoves(inputs=US_All,scores=US_Sovi_Score,drop=uscd)
 print('\n')
 
 # cleanup

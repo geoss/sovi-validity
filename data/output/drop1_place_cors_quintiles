@@ -1,0 +1,46 @@
+Drop One Place: State
+
+('Spearman Rank Correlation: 0.46137', 'p-value: 0.0003')
+
+
+               Quantiles                
+ 
+Lower            Upper             Count
+========================================
+         x[i] <= 13.200               12
+13.200 < x[i] <= 24.400               11
+24.400 < x[i] <= 35.600               11
+35.600 < x[i] <= 46.800               11
+46.800 < x[i] <= 58.000               12
+
+
+Drop One Place: FEMA
+
+('Spearman Rank Correlation: 0.4157', 'p-value: 0.0001')
+
+
+               Quantiles                
+ 
+Lower            Upper             Count
+========================================
+         x[i] <= 18.600               18
+18.600 < x[i] <= 36.200               18
+36.200 < x[i] <= 53.800               17
+53.800 < x[i] <= 72.400               18
+72.400 < x[i] <= 90.000               18
+
+
+Drop One Place: USA
+
+('Spearman Rank Correlation: 0.96731', 'p-value: 0.0')
+
+
+                  Quantiles                  
+ 
+ Lower              Upper               Count
+=============================================
+           x[i] <=  629.200               629
+ 629.200 < x[i] <= 1257.400               628
+1257.400 < x[i] <= 1886.600               628
+1886.600 < x[i] <= 2514.800               628
+2514.800 < x[i] <= 3143.000               629
