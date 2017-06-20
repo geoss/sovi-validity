@@ -368,8 +368,6 @@ ca_rchg=rankChgTable(inputs=US_All,scores=State_Sovi_Score,obs_names=county_name
 # rank quantile moves with minimum rank correlation
 ca_quint_moves=rankQuantileMoves(inputs=US_All,scores=State_Sovi_Score,subset='g06',drop=cad)
 
-print('\n')
-
 # ##### FEMA 9: California and surrounding states (includes Hawaii)
 print('Drop One Place: FEMA\n')
 
@@ -383,23 +381,19 @@ f9_rchg=rankChgTable(inputs=US_All,scores=FEMA_Region_Sovi_Score,obs_names=count
 # rank quantile moves
 f9_quint_moves=rankQuantileMoves(inputs=US_All,scores=FEMA_Region_Sovi_Score,subset='FEMA_9',drop=f9cd)
 
+# ### Full USA
+print('Drop One Place: USA\n')
+
+us_cors=dropCors(US_All,US_Sovi_Score)
+
+# obs that decreases the correlation most when dropped
+uscd=us_cors[us_cors==min(us_cors)].index.values[0]
+
+us_rchg=rankChgTable(inputs=US_All,scores=US_Sovi_Score,obs_names=county_names,drop=uscd,cor=True,top=10)
+
+# rank quantile moves
+us_rchg=rankQuantileMoves(inputs=US_All,scores=US_Sovi_Score,drop=uscd)
 print('\n')
-
-# # ### Full USA
-# # NOT RUN - TIME INTENSIVE #
-# print('Drop One Place: USA\n')
-
-# us_cors=dropCors(compute_sovis.US_All,compute_sovis.US_Sovi_Score)
-#
-# # obs that decreases the correlation most when dropped
-# uscd=cors[cors==min(us_cors)].index.values[0]
-# county_names[county_names.geoFIPS.str.contains(uscd)]
-#
-# us_rchg=rankChgTable(inputs=compute_sovis.US_All,scores=compute_sovis.US_Sovi_Score,obs_names=county_names,drop=uscd,cor=True,top=10)
-#
-# # rank quantile moves
-# us_rchg=rankQuantileMoves(inputs=compute_sovis.US_All,scores=compute_sovis.US_Sovi_Score,drop=uscd)
-# print('\n')
 
 # cleanup
 del multi_state_data_tmp
@@ -447,5 +441,5 @@ ca_rchg.to_csv(os.path.join(outPath,'output','drop1_place_state_rank_change_ca.c
 ca_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_state_quint_moves_ca.csv'))
 f9_rchg.to_csv(os.path.join(outPath,'output','drop1_place_fema_rank_change_fema9.csv'))
 f9_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_fema_quint_moves_fema9.csv'))
-# us_rchg.to_csv(os.path.join(outPath,'output','drop1_place_usa_rank_change.csv'))
-# us_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_usa_quint_moves.csv'))
+us_rchg.to_csv(os.path.join(outPath,'output','drop1_place_usa_rank_change.csv'))
+us_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_usa_quint_moves.csv'))
