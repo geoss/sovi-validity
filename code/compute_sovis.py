@@ -12,16 +12,16 @@
 import os
 import sys
 import pandas as pd
+# import geopandas as gpd
 import numpy as np
 from scipy.stats import spearmanr
 sys.path.insert(1, "./code")
 from spss_pca import SPSS_PCA
+from drop1_place import *
 import data_prep
-
 pd.set_option("chained_assignment", None)
 
-path = os.getcwd()
-# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
+path=os.getcwd()
 outPath = os.path.join(path, 'data')
 ipath = os.path.join(path, 'data', 'input')
 spath = os.path.join(path, 'data', 'spatial')
@@ -237,7 +237,7 @@ for area in varContrib.keys():
     variable_contributions[area] = [x for i, x in varContrib[area]]
 
 ##########################################################################
-# Ranks w/ Geographic Extent 
+# Ranks w/ Geographic Extent
 # For each county rank within state for US, state, and fema_region sovis
 ##########################################################################
 
@@ -275,7 +275,7 @@ for st in stateList:
         # get all counties in state and rank for fema region
         st_cty_scores = FEMA_Region_Sovi_Score.loc[[st in s for s in FEMA_Region_Sovi_Score.index], 'sovi']
         county_in_state_rank.loc[st_cty_scores.index, 'fema_region_sovi_rank'] = st_cty_scores.rank(method='average', ascending=False)
-       
+
         # county rank in state only sovi
         st_cty_scores = State_Sovi_Score.loc[State_Sovi_Score['state_id'] == st, 'rank']
         county_in_state_rank.loc[st_cty_scores.index, 'state_sovi_rank'] = st_cty_scores
@@ -309,10 +309,10 @@ for j in dropLevels:
     sovi_actual = pd.DataFrame(sovi_actual, index=geoLevels, columns=['sovi'])
     US_SoVI_Drop1_Score.loc[j, 'sovi'] = sovi_actual.values
     attrib_contribution = pd.DataFrame(data=pca.weights_rot.sum(1), index=US_dropj.columns)
-  
-    attrib_contribution = attrib_contribution.transpose() 
+
+    attrib_contribution = attrib_contribution.transpose()
     attrib_contribution.index = [j]
-    US_Drop1_NetContrib.loc[attrib_contribution.columns,j] = attrib_contribution.loc[j, :] 
+    US_Drop1_NetContrib.loc[attrib_contribution.columns,j] = attrib_contribution.loc[j, :]
 
 
 # sort by rank order
@@ -339,11 +339,60 @@ for st in stateList:
       county_in_state_rank.ix[['g33' in s for s in county_in_state_rank.index], ])
     st_fema_spearman = spearmanr(multi_state_data_tmp[['state_sovi_rank', 'fema_region_sovi_rank']])
     st_us_spearman = spearmanr(multi_state_data_tmp[['state_sovi_rank', 'us_sovi_rank']])
-    state_corrs.loc['g23g33g25', ] = [st_fema_spearman[0], st_fema_spearman[1], st_us_spearman[0], st_us_spearman[1]] 
+    state_corrs.loc['g23g33g25', ] = [st_fema_spearman[0], st_fema_spearman[1], st_us_spearman[0], st_us_spearman[1]]
   else:
     st_fema_spearman = spearmanr(county_in_state_rank.ix[[st in s for s in county_in_state_rank.index], ['state_sovi_rank', 'fema_region_sovi_rank']])
     st_us_spearman = spearmanr(county_in_state_rank.ix[[st in s for s in county_in_state_rank.index], ['state_sovi_rank', 'us_sovi_rank']])
     state_corrs.loc[st, ] = [st_fema_spearman[0], st_fema_spearman[1], st_us_spearman[0], st_us_spearman[1]]
+
+################
+# DROP ONE PLACE
+################
+
+# df containing county names - no need for the geometr#
+# county_names=pd.DataFrame(gpd.read_file(os.path.join(s#path,'USA_Counties_500k.shp('../data/
+county_names=pd.read_csv(os.path.join(ipath,'county_names.csv'),index_col=0,encoding='latin-1')
+
+# ##### State (California)
+print('\nDrop One Place: State\n')
+# spearman rank correlations
+ca_cors=dropCors(US_All,State_Sovi_Score,'g06')
+
+# drop run with minimum rank correlation
+cad=ca_cors[ca_cors==min(ca_cors)].index.values[0]
+
+# rank change table with minimum rank correlation
+ca_rchg=rankChgTable(inputs=US_All,scores=State_Sovi_Score,obs_names=county_names,subset='g06',drop=cad,cor=True,top=10)
+
+# rank quantile moves with minimum rank correlation
+ca_quint_moves=rankQuantileMoves(inputs=US_All,scores=State_Sovi_Score,subset='g06',drop=cad)
+
+# ##### FEMA 9: California and surrounding states (includes Hawaii)
+print('Drop One Place: FEMA\n')
+
+f9_cors=dropCors(US_All,FEMA_Region_Sovi_Score,'FEMA_9')
+
+# obs that decreases the correlation most when dropped
+f9cd=f9_cors[f9_cors==min(f9_cors)].index.values[0]
+
+f9_rchg=rankChgTable(inputs=US_All,scores=FEMA_Region_Sovi_Score,obs_names=county_names,subset='FEMA_9',drop=f9cd,cor=True,top=10)
+
+# rank quantile moves
+f9_quint_moves=rankQuantileMoves(inputs=US_All,scores=FEMA_Region_Sovi_Score,subset='FEMA_9',drop=f9cd)
+
+# ### Full USA
+print('Drop One Place: USA\n')
+
+us_cors=dropCors(US_All,US_Sovi_Score)
+
+# obs that decreases the correlation most when dropped
+uscd=us_cors[us_cors==min(us_cors)].index.values[0]
+
+us_rchg=rankChgTable(inputs=US_All,scores=US_Sovi_Score,obs_names=county_names,drop=uscd,cor=True,top=10)
+
+# rank quantile moves
+us_quint_moves=rankQuantileMoves(inputs=US_All,scores=US_Sovi_Score,drop=uscd)
+print('\n')
 
 # cleanup
 del multi_state_data_tmp
@@ -374,14 +423,22 @@ county_in_state_rank.to_csv(os.path.join(
 variable_contributions.to_csv(os.path.join(
     outPath, 'output', 'variable_contributions.csv'))
 
-# Net contribution of variables after dropping a variable 
+# Net contribution of variables after dropping a variable
 US_Drop1_NetContrib.to_csv(os.path.join(
     outPath, 'output', 'US_Drop1_NetContrib_raw.csv'))
 
-# rank of variables after dropping a variable 
+# rank of variables after dropping a variable
 US_Drop1_NetContrib_ranks.to_csv(os.path.join(
     outPath, 'output', 'US_Drop1_NetContrib_ranks.csv'))
 
 # Correlation of ranks
 state_corrs.to_csv(os.path.join(
     outPath, 'output', 'state_fema_us_rank_correlations.csv'))
+
+# Drop 1 place
+ca_rchg.to_csv(os.path.join(outPath,'output','drop1_place_state_rank_change_ca.csv'))
+ca_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_state_quint_moves_ca.csv'))
+f9_rchg.to_csv(os.path.join(outPath,'output','drop1_place_fema_rank_change_fema9.csv'))
+f9_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_fema_quint_moves_fema9.csv'))
+us_rchg.to_csv(os.path.join(outPath,'output','drop1_place_usa_rank_change.csv'))
+us_quint_moves.to_csv(os.path.join(outPath,'output','drop1_place_usa_quint_moves.csv'))

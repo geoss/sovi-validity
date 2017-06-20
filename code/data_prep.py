@@ -25,7 +25,7 @@ path = os.getcwd()
 outPath=os.path.join(path,'data')
 ipath = os.path.join(path,'data','input')
 spath = os.path.join(path,'data','spatial')
-
+#
 # functions fot the calculation of SE
 
 
