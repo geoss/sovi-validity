@@ -21,11 +21,11 @@ pd.set_option("chained_assignment", None)
 # spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
 
 path = os.getcwd()
-path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
+# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
 outPath=os.path.join(path,'data')
 ipath = os.path.join(path,'data','input')
 spath = os.path.join(path,'data','spatial')
-
+#
 # functions fot the calculation of SE
 
 
