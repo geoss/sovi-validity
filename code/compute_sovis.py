@@ -21,8 +21,6 @@ from drop1_place import *
 import data_prep
 pd.set_option("chained_assignment", None)
 
-# path = os.getcwd()
-# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
 path=os.getcwd()
 outPath = os.path.join(path, 'data')
 ipath = os.path.join(path, 'data', 'input')
@@ -352,7 +350,8 @@ for st in stateList:
 ################
 
 # df containing county names - no need for the geometries
-county_names=pd.DataFrame(gpd.read_file(os.path.join(spath,'USA_Counties_500k.shp')).ix[:,['geoFIPS','NAME']],dtype='str')
+# county_names=pd.DataFrame(gpd.read_file(os.path.join(spath,'USA_Counties_500k.shp')).ix[:,['geoFIPS','NAME']],dtype='str')
+county_names=pd.read_csv('../data/input/county_names.csv',index_col=0,encoding='latin-1')
 
 # ##### State (California)
 print('\nDrop One Place: State\n')
