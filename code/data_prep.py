@@ -9,16 +9,11 @@ import os
 import pandas as pd
 import pysal as ps
 import numpy as np
+@TODO: Finish Doc strings
+@TODO: Cleanup file
+
 
 pd.set_option("chained_assignment", None)
-
-# # Set paths to data
-# local_path = '/Users/sspielman/'
-# os.chdir(local_path + 'Dropbox/SoVI_var_wise_paper/code')
-# path = local_path + '/Dropbox/SoVI_var_wise_paper'
-# outPath = local_path + '/Dropbox/SoVI_var_wise_paper/data'
-# ipath = local_path + "Dropbox/SoVI_var_wise_paper/data/input"
-# spath = local_path + "Dropbox/SoVI_var_wise_paper/data/spatial"
 
 path = os.getcwd()
 # path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
@@ -30,6 +25,13 @@ spath = os.path.join(path,'data','spatial')
 
 
 def se_sum(*ses):
+    """
+    compute the standard errors for a composite (sum) variable)
+
+    :param ses: an arbitrary number of standard errors for variables participating in a sum (composite variable)
+    :return: Data frame containing standard errors for the composite variable
+    """
+
     df_temp = pd.DataFrame(list(ses))
     df_temp = df_temp.T
     df_temp = np.square(df_temp)
@@ -38,9 +40,16 @@ def se_sum(*ses):
 
 
 # SE of a ratio
-
-
 def se_ratio(est, estd, sen, sed):
+    """
+
+    :param est:
+    :param estd:
+    :param sen:
+    :param sed:
+    :return:
+    """
+
     sen2 = np.square(sen)
     sed2 = np.square(sed)
     est2 = np.square(est)
@@ -49,8 +58,6 @@ def se_ratio(est, estd, sen, sed):
 
 
 # SE of a proprotion
-
-
 def se_prop(est, estd, sen, sed):
     sen2 = np.square(sen)
     sed2 = np.square(sed)
@@ -64,8 +71,6 @@ def se_prop(est, estd, sen, sed):
 
 
 # unit test for equivalency between original and constructed variables
-
-
 def equal_test(orig, alt):
     if np.equal(orig, alt).sum() != db.shape[0]:
         if (db.shape[0] - np.equal(orig, alt).sum()) \
