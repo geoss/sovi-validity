@@ -1,98 +1,40 @@
-# !/usr/bin/env
-
-# This script loads and prepares Census and ACS data.
-# Outputs a CSV file that can be used for the construction of SoVI
-# Interpolates missing values using nearby values
-# Calculates SE for compositve variables
+"""
+# Prepare Census and ACS data.
+# Outputs a CSV file for the construction of SoVI
+# Calculates SE for composite variables
+"""
 
 import os
 import pandas as pd
 import pysal as ps
 import numpy as np
-@TODO: Finish Doc strings
-@TODO: Cleanup file
-
+from data_processing_functions import se_sum, se_ratio, se_prop, equal_test
 
 pd.set_option("chained_assignment", None)
 
 path = os.getcwd()
-# path = os.path.dirname(os.getcwd()) # if running from the 'code' directory
-outPath=os.path.join(path,'data')
-ipath = os.path.join(path,'data','input')
-spath = os.path.join(path,'data','spatial')
-#
-# functions fot the calculation of SE
+outPath = os.path.join(path, 'data')
+ipath = os.path.join(path, 'data', 'input')
+spath = os.path.join(path, 'data', 'spatial')
 
+"""
+LOAD AND PREP DATA
 
-def se_sum(*ses):
-    """
-    compute the standard errors for a composite (sum) variable)
+Data used in this analysis was downloaded from social explorer, a fee based service that facilitates
+download of census and acs data.  
 
-    :param ses: an arbitrary number of standard errors for variables participating in a sum (composite variable)
-    :return: Data frame containing standard errors for the composite variable
-    """
-
-    df_temp = pd.DataFrame(list(ses))
-    df_temp = df_temp.T
-    df_temp = np.square(df_temp)
-    df_temp = df_temp.sum(1)
-    return np.sqrt(df_temp)
-
-
-# SE of a ratio
-def se_ratio(est, estd, sen, sed):
-    """
-
-    :param est:
-    :param estd:
-    :param sen:
-    :param sed:
-    :return:
-    """
-
-    sen2 = np.square(sen)
-    sed2 = np.square(sed)
-    est2 = np.square(est)
-    num = np.sqrt(sen2 + (est2 * sed2))
-    return num / estd
-
-
-# SE of a proprotion
-def se_prop(est, estd, sen, sed):
-    sen2 = np.square(sen)
-    sed2 = np.square(sed)
-    est2 = np.square(est)
-    num = sen2 - (est2 * sed2)
-    num_alt = sen2 + (est2 * sed2)
-    problems = num <= 0
-    num[problems] = num_alt[problems]
-    num = np.sqrt(num)
-    return num / estd
-
-
-# unit test for equivalency between original and constructed variables
-def equal_test(orig, alt):
-    if np.equal(orig, alt).sum() != db.shape[0]:
-        if (db.shape[0] - np.equal(orig, alt).sum()) \
-                == np.isnan(orig).sum() == np.isnan(alt).sum():
-            pass
-        else:
-            print("problem in equal test")
-            raise
-
-
+@TODO: Description of each file loaded below needed
+"""
 # define data types
 make_strings = {'Geo_FIPS': object, 'Geo_STATE': object, 'Geo_COUNTY': object,
                 'Geo_TRACT': object, 'Geo_CBSA': object, 'Geo_CSA': object}
 
-# load data
-# JOE: I had to change the encoding to latin-1 to avoid hitting a UTF-8 error
 acs = pd.read_csv(os.path.join(ipath, 'sovi_acs.csv'),
-                  dtype=make_strings, skiprows=1,encoding='latin-1')
+                  dtype=make_strings, skiprows=1, encoding='latin-1')
 census = pd.read_csv(os.path.join(ipath, 'sovi_decennial.csv'),
-                     dtype=make_strings, skiprows=1,encoding='latin-1')
+                     dtype=make_strings, skiprows=1, encoding='latin-1')
 acs_samp = pd.read_csv(os.path.join(ipath, 'sovi_acs_sampSize.csv'),
-                       dtype=make_strings, skiprows=1,encoding='latin-1')
+                       dtype=make_strings, skiprows=1, encoding='latin-1')
 
 # format FIPS
 acs.index = 'g' + acs.Geo_FIPS
@@ -107,24 +49,24 @@ db = db.join(acs_samp, rsuffix='_acsSamp')
 # if available add supplmentary data
 try:
     census_sup1 = pd.read_csv(os.path.join(ipath, 'sovi_decennial_sup1.csv'),
-        dtype=make_strings,skiprows=1,encoding='latin-1')
+                              dtype=make_strings, skiprows=1, encoding='latin-1')
     census_sup1.index = 'g' + census_sup1.Geo_FIPS
     db = db.join(census_sup1, rsuffix='_decSup1')
-except:
+except FileNotFoundError:
     print("no supplementary decennial data")
 try:
     acs_sup1 = pd.read_csv(os.path.join(spath, 'sovi_acs_sup1.csv'),
-        dtype=make_strings,skiprows=1,encoding='latin-1')
+                           dtype=make_strings, skiprows=1, encoding='latin-1')
     acs_sup1.index = 'g' + acs_sup1.Geo_FIPS
     db = db.join(acs_sup1, rsuffix='_acsSup1')
-except:
+except FileNotFoundError:
     print("did not pull supplementary ACS data - A")
 try:
     acs_sup2 = pd.read_csv(os.path.join(ipath, 'sovi_acs_kids.csv'),
-                           dtype=make_strings, skiprows=1,encoding='latin-1')
+                           dtype=make_strings, skiprows=1, encoding='latin-1')
     acs_sup2.index = 'g' + acs_sup2.Geo_FIPS
     db = db.join(acs_sup2, rsuffix='_acsSup2')
-except:
+except FileNotFoundError:
     print("did not pull supplementary ACS data - B")
 
 # drop Puerto Rico (sorry PR!)
@@ -132,13 +74,15 @@ db = db[db.Geo_STATE != '72']
 
 # define SE columns
 se_cols = [i for i in db.columns if i[-1] == 's' and i[0] == 'A']
-db[se_cols] *= (1.65 / 1.645)
+db[se_cols] *= (1.65 / 1.645)  # conversion rate for 90 pct conf interval
 
-# calculate weights matrix
-w = ps.queen_from_shapefile(os.path.join(spath, 'USA_Counties_500k.shp'),
-                            idVariable='geoFIPS')
-w.transform = 'R'
+"""
+COMPUTE SOVI INPUT DF
 
+This the code below is fairly elaborate, this is necessary because many of the vairables used in the SOVI index
+have to be derived from other variables.  We compute variables from both the decennial census (2010) and the ACS
+below.
+"""
 # output dataframe
 db1 = pd.DataFrame(index=db.index)
 
@@ -253,6 +197,16 @@ db1['MHSEVAL_ALT'] = db.ACS12_5yr_B25077001
 
 # I didn't understand QURBRURX
 db1['POPDENS'] = db.ACS12_5yr_B01003001 / (db.SE_T02A_002 * 1.)
+
+"""
+SPATIALLY IMPUTE MISSING VALUES
+
+For some counties homevalue is missing from the census so we impute it by taking the average of neighboring counties.
+"""
+# calculate weights matrix
+w = ps.queen_from_shapefile(os.path.join(spath, 'USA_Counties_500k.shp'),
+                            idVariable='geoFIPS')
+w.transform = 'R'
 
 # if no home value, assign the spatial lag of the estimate and SE
 homeval = db1['MHSEVAL_ALT'].copy()
@@ -424,6 +378,9 @@ equal_test(db1.QNOAUTO, db1.QNOAUTO_ALT)
 # Add in the sample sizes
 db1['sample_person'] = db.ACS12_5yr_B00001001
 db1['sample_hu'] = db.ACS12_5yr_B00002001
+
+# writing index as variable because someone wrote bad code and this required.
+db1['Geo_FIPS'] = db1.index.values
 
 # Save data if main
 if __name__ == "__main__":
