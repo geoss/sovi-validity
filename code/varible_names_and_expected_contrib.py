@@ -1,0 +1,35 @@
+# attribute name and expected influence on vulnerability
+class sovi_vars:
+
+    def __init__(self):
+        input_names = [['MEDAGE_ACS', 'pos', 'person', 'Median Age'],
+               ['BLACK_ACS', 'pos', 'person', 'Pop African-American (%)'],
+               ['QNATAM_ACS', 'pos', 'person', 'Pop Native American (%)'],
+               ['QASIAN_ACS', 'pos', 'person', 'Pop Asian (%)'],
+               ['QHISP_ACS', 'pos', 'person', 'Pop Hispanic (%)'],
+               ['QAGEDEP_ACS', 'pos', 'person', 'Age Dependency (%)'],
+               ['QPUNIT_ACS', 'pos', 'person', 'Persons Per Housing Unit'],
+               ['PRENTER_ACS', 'pos', 'hu', 'Rental Housing (%)'],
+               ['QNRRES_ACS', 'pos', 'person', 'Nursing Home Residents (%)'],
+               ['QFEMALE_ACS', 'pos', 'person', 'Pop Female (%)'],
+               ['QFHH_ACS', 'pos', 'hu', 'Female-Headed Households (%)'],
+               ['QUNOCCHU_ACS', 'pos', 'hu', 'Vacant Housing (%)'],
+               ['PERCAP_ALT', 'neg', 'person', 'Per-Capita Income'],
+               ['QESL_ALT', 'pos', 'person', 'English as Second Language (%)'],
+               ['QCVLUN', 'pos', 'person', 'Unemployment (%)'],
+               ['QPOVTY', 'pos', 'person', 'Poverty (%)'],
+               ['QMOHO', 'pos', 'hu', 'Mobile Homes (%)'],
+               ['QED12LES_ALT', 'pos', 'person',
+                'Adults Completed <Grade 12 (%)'],
+               ['QFEMLBR', 'pos', 'person', 'Female Employment (%)'],
+               ['QEXTRCT_ALT', 'pos', 'person',
+                'Extractive Sector Employment (%)'],
+               ['QSERV_ALT', 'pos', 'person', 'Service Sector Employment (%)'],
+               ['QSSBEN', 'pos', 'hu', 'Social Security Income (%)'],
+               ['QNOAUTO_ALT', 'pos', 'hu', 'No Automobile (%)'],
+               ['QFAM', 'neg', 'person', 'Children in Married Families (%)'],
+               ['QRICH200K', 'neg', 'hu', 'Annual Income >$200K (%)'],
+               ['MDGRENT_ALT', 'neg', 'hu', 'Median Rent'],
+               ['MHSEVAL_ALT', 'neg', 'hu', 'Median Home Value'],
+               ['POPDENS', 'pos', 'person', 'Population Density']]
+
